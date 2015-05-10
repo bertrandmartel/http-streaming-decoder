@@ -67,35 +67,27 @@ You can open .pro file of both with qtcreator and build project
 
 <b>Exemple</b>
 
-``HttpDecoder decoder; //must be called only once (TODO: memory leak on multiple call)
-httpConsumer *consumer = new httpConsumer;
+``HttpDecoder decoder;``
 
-QByteArray *httpFrame = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";
+``httpConsumer *consumer = new httpConsumer;``
 
-httpFrame = new QByteArray(data1);
-decoder.httpDecode(consumer,httpFrame);``
+``QByteArray *httpFrame = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";``
+
+``httpFrame = new QByteArray(data1);``
+
+``decoder.httpDecode(consumer,httpFrame);``
 
 From consumer object ``consumer->getHttpFrameList()`` you can extract those fields : 
-_________________________________________________________________________________________________________________________________
-getUri()         | uri           | std::string                       | /api/rest
-getMethod()      | method        | std::string                       | POST
-getBody()        | body          | std::string                       | {"data":"OK"}
-getQueryString() | querystring   | std::string                       | Not Found
-getStatusCode()  | status code   | int                               | 404
-getHeaders()     | headers       | std::map<std::string,std::string> | [("Content-Length","15"),("Cookie","Qjkqhsdfklsdnfkdsf")]
 
-==> For instance : 
+  method name      |  data         | type                              | exemple
+| ---------------  | ------------- | --------------------------------  | ----------------------
+| getUri()         | uri           | std::string                       | /api/rest              |
+| getMethod()      | method        | std::string                       | POST                   |
+| getBody()        | body          | std::string                       | {"data":"OK"}          |
+| getQueryString() | querystring   | std::string                       | Not Found              |
+| getStatusCode()  | status code   | int                               | 404                    |
+| getHeaders()     | headers       | std::map<std::string,std::string> |("Content-Length","15") |
 
-``uri         : /rest/help/todo
-method      : POST
-body        : bodyTobeWritten
-querystring : 
-status code : 0
-headers     : 
-			  Content-Length =>   15
-			  headers1 =>   value1
-			  headers2 =>   value2
-``
 <hr/>
 
 * Project is Qt4 compliant
