@@ -26,9 +26,10 @@ SOURCES += \
 HEADERS += \
     launcher.h
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../httpdecoder/release/ -lhttpdecoder
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../httpdecoder/debug/ -lhttpdecoder
-else:unix: LIBS += -L$$PWD/../httpdecoder/ -lhttpdecoder
 
-INCLUDEPATH += $$PWD/../httpdecoder
-DEPENDPATH += $$PWD/../httpdecoder
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../httpdecoder/release/release/ -lhttpdecoder
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../httpdecoder/release/debug/ -lhttpdecoder
+else:unix: LIBS += -L$$PWD/../httpdecoder/release/ -lhttpdecoder
+
+INCLUDEPATH += $$PWD/../httpdecoder/release
+DEPENDPATH += $$PWD/../httpdecoder/release

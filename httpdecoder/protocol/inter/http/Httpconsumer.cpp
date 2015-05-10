@@ -8,9 +8,9 @@
 */
 #include "Httpconsumer.h"
 #include <iostream>
-#include "Httpparser.h"
+#include "protocol/http/Httpparser.h"
 #include <QString>
-#include "Httpstates.h"
+#include "protocol/http/Httpstates.h"
 
 using namespace std;
 

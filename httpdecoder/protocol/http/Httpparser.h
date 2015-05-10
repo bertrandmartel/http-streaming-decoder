@@ -12,7 +12,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "Httpconsumer.h"
+#include "protocol/inter/http/Httpconsumer.h"
 
 /**
  * @brief The HttpParser class

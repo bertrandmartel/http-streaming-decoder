@@ -42,8 +42,8 @@
     @version 1.0
 */
 #include <QCoreApplication>
-#include "HttpDecoder.h"
-#include "Httpconsumer.h"
+#include "protocol/http/HttpDecoder.h"
+#include "protocol/inter/http/Httpconsumer.h"
 #include <QString>
 #include <QByteArray>
 #include "iostream"

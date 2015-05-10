@@ -11,24 +11,26 @@ TEMPLATE = lib
 
 DEFINES += HTTPDECODER_LIBRARY
 
+DESTDIR = ./release
+
 SOURCES += \
-    Httpconsumer.cpp \
-    Httpdecoder.cpp \
-    Httpframe.cpp \
-    Httpparser.cpp \
-    Stringutils.cpp
+    protocol/inter/http/Httpconsumer.cpp \
+    protocol/http/Httpdecoder.cpp \
+    protocol/inter/http/Httpframe.cpp \
+    protocol/http/Httpparser.cpp \
+    utils/Stringutils.cpp
 
 HEADERS +=\
-    Httpconsumer.h \
-    Httpdecoder.h \
-    Httpdecoder_global.h \
-    Httpframe.h \
-    Httpparser.h \
-    Httpstates.h \
-    IhttpFrame.h \
-    Stringutils.h \
-    HttpDecoder.h \
-    httpconstants.h
+    protocol/inter/http/Httpconsumer.h \
+    protocol/http/Httpdecoder.h \
+    protocol/http/Httpdecoder_global.h \
+    protocol/inter/http/Httpframe.h \
+    protocol/http/Httpparser.h \
+    protocol/http/Httpstates.h \
+    protocol/inter/http/IhttpFrame.h \
+    utils/Stringutils.h \
+    protocol/http/HttpDecoder.h \
+    protocol/http/httpconstants.h
 
 unix:!symbian {
     maemo5 {

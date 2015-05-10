@@ -9,7 +9,7 @@
 #ifndef HTTPDECODER_H
 #define HTTPDECODER_H
 
-#include "Httpconsumer.h"
+#include "protocol/inter/http/Httpconsumer.h"
 #include "QByteArray"
 
 /**

@@ -9,8 +9,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <Httpconsumer.h>
-#include "HttpDecoder.h"
+#include <protocol/inter/http/Httpconsumer.h>
+#include "protocol/http/HttpDecoder.h"
 
 class launcher
 {

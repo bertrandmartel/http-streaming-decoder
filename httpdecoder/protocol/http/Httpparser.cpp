@@ -13,11 +13,11 @@
 #include <sstream>
 #include <QString>
 #include <iostream>
-#include "Stringutils.h"
+#include "utils/Stringutils.h"
 #include "httpconstants.h"
 #include "Httpstates.h"
-#include "Httpconsumer.h"
-#include "Httpframe.h"
+#include "protocol/inter/http/Httpconsumer.h"
+#include "protocol/inter/http/Httpframe.h"
 
 using namespace std;
 
