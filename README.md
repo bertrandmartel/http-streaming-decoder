@@ -33,11 +33,11 @@ Then instantiate a new ``httpConsumer`` : this object will monitor your data str
 
 ``httpConsumer *consumer = new httpConsumer;``
 
-For both of them you'll need these import : 
+For both of them you'll need these import : <br/>
 ``#include "HttpDecoder.h"``<br/>
 ``#include "Httpconsumer.h"``<br/>
 
-Your data streaming will be put to a ``QByteArray *`` to be sent to http decoder :
+Your data streaming will be put to a ``QByteArray *`` to be sent to http decoder :<br/>
 ``QByteArray *httpFrame = new QByteArray("POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n")``
 
 Eventually decode with : 
@@ -62,7 +62,7 @@ This is composed of 2 projects:
 
 You can open .pro file of both with qtcreator and build project
 
-<br/>
+<hr/>
 
 * Project is Qt4 compliant
 * You can build it with qmake
