@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>http-streaming-decoder-cpp by akinaru</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">http-streaming-decoder-cpp</h1>
+      <h2 class="project-tagline">HTTP streaming decoder in C++</h2>
+      <a href="https://github.com/akinaru/http-streaming-decoder-cpp" class="btn">View on GitHub</a>
+      <a href="https://github.com/akinaru/http-streaming-decoder-cpp/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/akinaru/http-streaming-decoder-cpp/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="http-streaming-decoder-in-c" class="anchor" href="#http-streaming-decoder-in-c" aria-hidden="true"><span class="octicon octicon-link"></span></a>HTTP streaming decoder in C++</h1>
+
+<p><a href="http://akinaru.github.io/http-streaming-decoder-cpp/">http://akinaru.github.io/http-streaming-decoder-cpp/</a></p>
+
+<p><i>Last update 10/05/2015</i></p>
+
+<p>HTTP protocol decoder</p>
+
+<ul>
+<li>parse any HTTP data streaming</li>
+<li>non-blocking process</li>
+<li>compatible with non-blocking or blocking socket architecture</li>
+<li>http decoding monitoring</li>
+</ul>
+
+<hr>
+
+<p><b>Generality</b></p>
+
+<p>This repo features source code and test project for http decoder library.</p>
+
+<p>Library is generated as a shared library (.dll or .so)</p>
+
+<p>This project uses QtCore and is build with qmake utility (you can use QtCreator to build it)</p>
+
+<hr>
+
+<p><b>PROGRAM SYNTAX for decoding HTTP frames</b></p>
+
+<p>First you have to declare the <code>HttpDecoder</code> object</p>
+
+<p><code>HttpDecoder decoder;</code></p>
+
+<p>Then instantiate a new <code>httpConsumer</code> : this object will monitor your data streaming decoding and will contain decoded frame(s)</p>
+
+<p><code>httpConsumer *consumer = new httpConsumer;</code></p>
+
+<p>For both of them you'll need these import : <br>
+<code>#include "protocol/http/HttpDecoder.h"</code><br>
+<code>#include "protocol/inter/http/Httpconsumer.h"</code><br></p>
+
+<p>Your data streaming will be put to a <code>QByteArray *</code> to be sent to http decoder :<br>
+<code>QByteArray *httpFrame = new QByteArray("POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n")</code></p>
+
+<p>Eventually decode with : </p>
+
+<p><code>decoder.httpDecode(consumer,httpFrame);</code></p>
+
+<p>Result of decoding will be in your pointer to consumer object you have just created</p>
+
+<p>You can access to decoded frame with <code>consumer-&gt;getHttpFrameList()</code> which is a <code>vector&lt;httpConsumer*&gt;</code> you can iterate</p>
+
+<p>Then you can remove frame you have treated and re-loop to decode again with the same object if you want to</p>
+
+<p>Complete exemple in ./http-decoder-test/launcher.cpp</p>
+
+<hr>
+
+<p><b>How to build</b></p>
+
+<p>This is composed of 2 projects:</p>
+
+<ul>
+<li>http decoder library project</li>
+<li>http decoder test </li>
+</ul>
+
+<p>You can open .pro file of both with qtcreator and build project</p>
+
+<hr>
+
+<p><b>Exemple</b></p>
+
+<p><code>HttpDecoder decoder;</code></p>
+
+<p><code>httpConsumer *consumer = new httpConsumer;</code></p>
+
+<p><code>QByteArray *httpFrame = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";</code></p>
+
+<p><code>httpFrame = new QByteArray(data1);</code></p>
+
+<p><code>decoder.httpDecode(consumer,httpFrame);</code></p>
+
+<p>From consumer object <code>consumer-&gt;getHttpFrameList()</code> you can extract those fields : </p>
+
+<table>
+<thead>
+<tr>
+<th>method name</th>
+<th>data</th>
+<th>type</th>
+<th>exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getUri()</td>
+<td>uri</td>
+<td>std::string</td>
+<td>/api/rest</td>
+</tr>
+<tr>
+<td>getMethod()</td>
+<td>method</td>
+<td>std::string</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>getBody()</td>
+<td>body</td>
+<td>std::string</td>
+<td>{"data":"OK"}</td>
+</tr>
+<tr>
+<td>getQueryString()</td>
+<td>querystring</td>
+<td>std::string</td>
+<td>Not Found</td>
+</tr>
+<tr>
+<td>getStatusCode()</td>
+<td>status code</td>
+<td>int</td>
+<td>404</td>
+</tr>
+<tr>
+<td>getHeaders()</td>
+<td>headers</td>
+<td>std::mapstd::string,std::string</td>
+<td>("Content-Length","15")</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<ul>
+<li>Project is Qt4 compliant</li>
+<li>You can build it with qmake</li>
+<li>Development on QtCreator</li>
+<li>Specification from <a href="https://www.ietf.org/rfc/rfc2616.txt">https://www.ietf.org/rfc/rfc2616.txt</a>
+</li>
+</ul>
+
+<p>TODO : plan to remove QtCore dependencies for a more portable solution</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/akinaru/http-streaming-decoder-cpp">http-streaming-decoder-cpp</a> is maintained by <a href="https://github.com/akinaru">akinaru</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-62569105-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
+
