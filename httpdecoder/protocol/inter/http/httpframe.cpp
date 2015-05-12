@@ -6,12 +6,12 @@
     @author Bertrand Martel
     @version 1.0
 */
-#include "Httpframe.h"
+#include "httpframe.h"
 #include "string"
 
 using namespace std;
 
-HttpFrame::HttpFrame()
+httpframe::httpframe()
 {
     headers=new map<string,string>();
     statusCode=0;
@@ -25,7 +25,7 @@ HttpFrame::HttpFrame()
  * @brief HttpFrame::~HttpFrame
  *      destruct => clean ptrs
  */
-HttpFrame::~HttpFrame()
+httpframe::~httpframe()
 {
     delete headers;
     headers=0;
@@ -36,7 +36,7 @@ HttpFrame::~HttpFrame()
  *      retrieve HTTP uri
  * @return
  */
-string HttpFrame::getUri()
+string httpframe::getUri()
 {
     return uri;
 }
@@ -46,7 +46,7 @@ string HttpFrame::getUri()
  *      retrieve HTTP method
  * @return
  */
-string HttpFrame::getMethod()
+string httpframe::getMethod()
 {
     return method;
 }
@@ -56,17 +56,17 @@ string HttpFrame::getMethod()
  *      retrieve length of body
  * @return
  */
-string HttpFrame::getBody()
+string httpframe::getBody()
 {
     return body;
 }
 
-std::string HttpFrame::getQueryString()
+std::string httpframe::getQueryString()
 {
     return querystring;
 }
 
-int HttpFrame::getStatusCode()
+int httpframe::getStatusCode()
 {
     return statusCode;
 }
@@ -76,7 +76,7 @@ int HttpFrame::getStatusCode()
  *      retrieve http headers
  * @return
  */
-map< std::string,std::string >* HttpFrame::getHeaders()
+map< std::string,std::string >* httpframe::getHeaders()
 {
     return headers;
 }
@@ -86,7 +86,7 @@ map< std::string,std::string >* HttpFrame::getHeaders()
  *      set processing frame state
  * @param processing
  */
-void HttpFrame::setFinishedProcessing(bool processing)
+void httpframe::setFinishedProcessing(bool processing)
 {
     finishedProcessing=processing;
 }
@@ -95,7 +95,7 @@ void HttpFrame::setFinishedProcessing(bool processing)
  *      set http uri value
  * @param uri
  */
-void HttpFrame::setUri(std::string uriArg)
+void httpframe::setUri(std::string uriArg)
 {
     uri=uriArg;
 }
@@ -105,7 +105,7 @@ void HttpFrame::setUri(std::string uriArg)
  *      set http method
  * @param method
  */
-void HttpFrame::setMethod(std::string methodArg)
+void httpframe::setMethod(std::string methodArg)
 {
     method=methodArg;
 }
@@ -115,7 +115,7 @@ void HttpFrame::setMethod(std::string methodArg)
  *      set http body value
  * @param body
  */
-void HttpFrame::setBody(std::string bodyArg)
+void httpframe::setBody(std::string bodyArg)
 {
     body=bodyArg;
 }
@@ -125,7 +125,7 @@ void HttpFrame::setBody(std::string bodyArg)
  *          set http query string value
  * @param querystring
  */
-void HttpFrame::setQueryString(std::string querystringArg)
+void httpframe::setQueryString(std::string querystringArg)
 {
     querystring=querystringArg;
 }
@@ -135,7 +135,7 @@ void HttpFrame::setQueryString(std::string querystringArg)
  *      set status code value
  * @param statusCode
  */
-void HttpFrame::setStatusCode(int statusCodeArg)
+void httpframe::setStatusCode(int statusCodeArg)
 {
     statusCode=statusCodeArg;
 }
@@ -145,7 +145,7 @@ void HttpFrame::setStatusCode(int statusCodeArg)
  * @return
  *
  */
-bool HttpFrame::isFinishedProcessing()
+bool httpframe::isFinishedProcessing()
 {
     return finishedProcessing;
 }

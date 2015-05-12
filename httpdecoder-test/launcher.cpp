@@ -42,8 +42,8 @@
     @version 1.0
 */
 #include <QCoreApplication>
-#include "protocol/http/HttpDecoder.h"
-#include "protocol/inter/http/Httpconsumer.h"
+#include "protocol/http/httpdecoder.h"
+#include "protocol/inter/http/httpconsumer.h"
 #include <QString>
 #include <QByteArray>
 #include "iostream"
@@ -92,8 +92,8 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    HttpDecoder decoder; //must be called only once (TODO: memory leak on multiple call)
-    httpConsumer *consumer = new httpConsumer;
+    httpdecoder decoder; //must be called only once (TODO: memory leak on multiple call)
+    httpconsumer *consumer = new httpconsumer;
 
     //debug your consumer here
     //consumer->setDebug(true);
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
  * @brief launcher::testStandaloneHttpFrames
  *      Test for one standalone http frame
  */
-void launcher::testStandaloneHttpFrames(httpConsumer * consumer,HttpDecoder decoder)
+void launcher::testStandaloneHttpFrames(httpconsumer * consumer,httpdecoder decoder)
 {
     QByteArray *httpFrame;
 
@@ -119,35 +119,35 @@ void launcher::testStandaloneHttpFrames(httpConsumer * consumer,HttpDecoder deco
     cout << "HTTP request POST test " << endl;
 
     httpFrame = new QByteArray(data1);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
 
     launcher::displayInfo(consumer);
     cout << "####################################" << endl;
     cout << "HTTP request GET test " << endl;
 
     httpFrame = new QByteArray(data2);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
 
     launcher::displayInfo(consumer);
     cout << "####################################" << endl;
     cout << "HTTP response with body test " << endl;
 
     httpFrame = new QByteArray(data3);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
 
     launcher::displayInfo(consumer);
     cout << "####################################" << endl;
     cout << "HTTP response without body test " << endl;
 
     httpFrame = new QByteArray(data4);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
 
     launcher::displayInfo(consumer);
     cout << "####################################" << endl;
     cout << "HTTP request POST test " << endl;
 
     httpFrame = new QByteArray(data5);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
 
     launcher::displayInfo(consumer);
     cout << "####################################" << endl;
@@ -160,26 +160,26 @@ void launcher::testStandaloneHttpFrames(httpConsumer * consumer,HttpDecoder deco
  * @brief launcher::testStandaloneHttpSeparatedByCRLF
  *      Test for one standalone HTTP frame separated with CRLF (one line at the time)
  */
-void launcher::testStandaloneHttpSeparatedByCRLF(httpConsumer * consumer,HttpDecoder decoder)
+void launcher::testStandaloneHttpSeparatedByCRLF(httpconsumer * consumer,httpdecoder decoder)
 {
     QByteArray *httpFrame;
 
     //[TEST OK] one standalone http frame chunked according to carriage return
 
     httpFrame = new QByteArray(chunk1);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
 
     httpFrame = new QByteArray(chunk2);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
 
     httpFrame = new QByteArray(chunk3);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
 
     httpFrame = new QByteArray(chunk4);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
 
     httpFrame = new QByteArray(chunk5);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
 
     launcher::displayInfo(consumer);
     cout << "####################################" << endl;
@@ -192,7 +192,7 @@ void launcher::testStandaloneHttpSeparatedByCRLF(httpConsumer * consumer,HttpDec
  * @brief launcher::testOnCharChunkedHttpFrame
  *          test for one char at the time
  */
-void launcher::testOnCharChunkedHttpFrame(httpConsumer * consumer,HttpDecoder decoder)
+void launcher::testOnCharChunkedHttpFrame(httpconsumer * consumer,httpdecoder decoder)
 {
     QByteArray *httpFrame;
 
@@ -202,7 +202,7 @@ void launcher::testOnCharChunkedHttpFrame(httpConsumer * consumer,HttpDecoder de
     {
         httpFrame = new QByteArray();
         httpFrame->append(chunkedChar2[i]);
-        decoder.httpDecode(consumer,httpFrame);
+        decoder.httpdecode(consumer,httpFrame);
     }
     launcher::displayInfo(consumer);
 
@@ -214,14 +214,14 @@ void launcher::testOnCharChunkedHttpFrame(httpConsumer * consumer,HttpDecoder de
  * @brief launcher::testMultipleFrames
  *      test of multiple http frame on the row
  */
-void launcher::testMultipleFrames(httpConsumer * consumer,HttpDecoder decoder)
+void launcher::testMultipleFrames(httpconsumer * consumer,httpdecoder decoder)
 {
     QByteArray *httpFrame;
 
     //[TEST OK] multiple complete http frames input
 
     httpFrame = new QByteArray(multipleFrame2);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
     launcher::displayInfo(consumer);
 
     delete httpFrame;
@@ -232,14 +232,14 @@ void launcher::testMultipleFrames(httpConsumer * consumer,HttpDecoder decoder)
  * @brief launcher::testMultipleFramesWithError
  *      test for error encapsulated in mutliple frames
  */
-void launcher::testMultipleFramesWithError(httpConsumer * consumer,HttpDecoder decoder)
+void launcher::testMultipleFramesWithError(httpconsumer * consumer,httpdecoder decoder)
 {
     QByteArray *httpFrame;
 
     //[TEST OK] multiple http frames input with error in between frames
 
     httpFrame = new QByteArray(multipleFrameWithError3);
-    decoder.httpDecode(consumer,httpFrame);
+    decoder.httpdecode(consumer,httpFrame);
     launcher::displayInfo(consumer);
 
     delete httpFrame;
@@ -251,7 +251,7 @@ void launcher::testMultipleFramesWithError(httpConsumer * consumer,HttpDecoder d
  *      display all frames decoded with http decoder and display all data from that
  * @param consumer
  */
-void launcher::displayInfo(httpConsumer* consumer)
+void launcher::displayInfo(httpconsumer* consumer)
 {
     cout << "number of http frames detected : " << consumer->getHttpFrameList().size() << endl;
 

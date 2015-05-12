@@ -3,12 +3,12 @@
 
 #include "IhttpFrame.h"
 
-class HttpFrame : public IHttpFrame
+class httpframe : public Ihttpframe
 {
 public:
-    HttpFrame();
+    httpframe();
 
-    ~HttpFrame();
+    ~httpframe();
 
     /**
      * @brief getUri

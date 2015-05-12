@@ -5,7 +5,7 @@
     @author Bertrand Martel
     @version 1.0
 */
-#include "Stringutils.h"
+#include "stringutils.h"
 #include "sstream"
 #include "vector"
 #include <cctype>

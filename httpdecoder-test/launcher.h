@@ -9,8 +9,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <protocol/inter/http/Httpconsumer.h>
-#include "protocol/http/HttpDecoder.h"
+#include <protocol/inter/http/httpconsumer.h>
+#include "protocol/http/httpdecoder.h"
 
 class launcher
 {
@@ -23,17 +23,17 @@ class launcher
      * @param consumer
      *      consumer client
      */
-    static void displayInfo(httpConsumer* consumer);
+    static void displayInfo(httpconsumer* consumer);
 
-    static void testStandaloneHttpFrames(httpConsumer * consumer,HttpDecoder decoder);
+    static void testStandaloneHttpFrames(httpconsumer * consumer,httpdecoder decoder);
 
-    static void testStandaloneHttpSeparatedByCRLF(httpConsumer * consumer,HttpDecoder decoder);
+    static void testStandaloneHttpSeparatedByCRLF(httpconsumer * consumer,httpdecoder decoder);
 
-    static void testOnCharChunkedHttpFrame(httpConsumer * consumer,HttpDecoder decoder);
+    static void testOnCharChunkedHttpFrame(httpconsumer * consumer,httpdecoder decoder);
 
-    static void testMultipleFrames(httpConsumer * consumer,HttpDecoder decoder);
+    static void testMultipleFrames(httpconsumer * consumer,httpdecoder decoder);
 
-    static void testMultipleFramesWithError(httpConsumer * consumer,HttpDecoder decoder);
+    static void testMultipleFramesWithError(httpconsumer * consumer,httpdecoder decoder);
 
 };
 

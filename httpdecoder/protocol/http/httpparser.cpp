@@ -8,16 +8,16 @@
 */
 #include <cctype>
 
-#include "Httpparser.h"
+#include "httpparser.h"
 #include <vector>
 #include <sstream>
 #include <QString>
 #include <iostream>
-#include "utils/Stringutils.h"
+#include "utils/stringutils.h"
 #include "httpconstants.h"
-#include "Httpstates.h"
-#include "protocol/inter/http/Httpconsumer.h"
-#include "protocol/inter/http/Httpframe.h"
+#include "httpstates.h"
+#include "protocol/inter/http/httpconsumer.h"
+#include "protocol/inter/http/httpframe.h"
 
 using namespace std;
 
@@ -28,7 +28,7 @@ std::vector<httpconstants::statusCodeStruct> httpconstants::http_status_code_lis
  *      Main HTTP Parser<br/>
  *      Will parse streaming data
  */
-HttpParser::HttpParser()
+httpparser::httpparser()
 {
     debug=false;
 }
@@ -38,7 +38,7 @@ HttpParser::HttpParser()
  *      set debug mode for http parser
  * @param debug
  */
-void HttpParser::setDebug(bool debugArg)
+void httpparser::setDebug(bool debugArg)
 {
     debug=debugArg;
 }
@@ -50,7 +50,7 @@ void HttpParser::setDebug(bool debugArg)
  * @param data
  *      streaming data
  */
-void HttpParser::parseHttp(QByteArray* data,httpConsumer *consumer)
+void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
 {
     if (debug)
         cout << "http state init : " << consumer->getHttpState() << endl;
@@ -59,7 +59,7 @@ void HttpParser::parseHttp(QByteArray* data,httpConsumer *consumer)
     {
         case HTTP_STATE_INIT:
         {
-            consumer->addNewHttpFrame(new HttpFrame());
+            consumer->addNewHttpFrame(new httpframe());
             consumer->setBodyProcess(false);
 
             consumer->getCurrentHttpFrame()->setBody("");
@@ -288,7 +288,7 @@ void HttpParser::parseHttp(QByteArray* data,httpConsumer *consumer)
  * @return
  *      true if data is valid REST HTTP method
  */
-bool HttpParser::isMethod(char* data)
+bool httpparser::isMethod(char* data)
 {
     if (strcmp(data,HTTP_METHOD_GET)==0 || strcmp(data,HTTP_METHOD_POST)==0 || strcmp(data,HTTP_METHOD_PUT)==0 || strcmp(data,HTTP_METHOD_DELETE)==0)
     {
@@ -305,7 +305,7 @@ bool HttpParser::isMethod(char* data)
  * @return
  *      true if data is valid HTTP status code
  */
-bool HttpParser::isStatusNum(char * data)
+bool httpparser::isStatusNum(char * data)
 {
 
     if (stringutils::isNum(data))

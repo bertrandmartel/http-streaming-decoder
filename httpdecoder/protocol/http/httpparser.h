@@ -12,18 +12,18 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "protocol/inter/http/Httpconsumer.h"
+#include "protocol/inter/http/httpconsumer.h"
 
 /**
  * @brief The HttpParser class
  *      Main HTTP Parser<br/>
  *      Will parse streaming data
  */
-class HttpParser
+class httpparser
 {
 
 public:
-    HttpParser();
+    httpparser();
 
     /**
      * @brief parseHttp
@@ -32,7 +32,7 @@ public:
      * @param data
      *      streaming data
      */
-    void parseHttp(QByteArray* data,httpConsumer * consumer);
+    void parseHttp(QByteArray* data,httpconsumer * consumer);
 
     /**
      * @brief setDebug

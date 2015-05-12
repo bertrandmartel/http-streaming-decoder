@@ -8,7 +8,7 @@
 #ifndef STRINGUTILS_H
 #define STRINGUTILS_H
 
-#include "Stringutils.h"
+#include "stringutils.h"
 #include "vector"
 #include "string"
 

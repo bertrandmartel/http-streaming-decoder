@@ -6,14 +6,14 @@
     @author Bertrand Martel
     @version 1.0
 */
-#include "HttpDecoder.h"
+#include "httpdecoder.h"
 #include "httpconstants.h"
-#include "Httpparser.h"
+#include "httpparser.h"
 #include "QString"
 
 using namespace std;
 
-HttpDecoder::HttpDecoder()
+httpdecoder::httpdecoder()
 {
     httpconstants::static_init();
 }
@@ -27,10 +27,10 @@ HttpDecoder::HttpDecoder()
  * @param data
  *      non-blocking or blocking data stream
  */
-void HttpDecoder::httpDecode(httpConsumer * consumer,QByteArray* data)
+void httpdecoder::httpdecode(httpconsumer * consumer,QByteArray* data)
 {
     QByteArray value = *data;
-    HttpParser parser;
+    httpparser parser;
 
     QByteArray currentLine="";
 

@@ -17,7 +17,7 @@
  *      Interface defining all http metadata decoded from http decoder
  *
  */
-class IHttpFrame{
+class Ihttpframe{
 
 public:
     /**

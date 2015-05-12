@@ -20,18 +20,18 @@
  *      Consumer client of http decoder<br/>
  *      This object permits to store http life cycle into your own design and monitor your parsing in a blocking or non-blocking socket configuration
  */
-class httpConsumer
+class httpconsumer
 {
     public:
 
-        ~httpConsumer();
+        ~httpconsumer();
 
         /**
          * @brief httpConsumer::httpConsumer
          *      Consumer client of http decoder<br/>
          *      This object permits to store http life cycle into your own design and monitor your parsing in a blocking or non-blocking socket configuration
          */
-        httpConsumer();
+        httpconsumer();
 
         /**
          * @brief httpConsumer::clearBuffer
@@ -142,21 +142,21 @@ class httpConsumer
          *      retrieve http frame object list
          * @return
          */
-        std::vector<IHttpFrame*> getHttpFrameList();
+        std::vector<Ihttpframe*> getHttpFrameList();
 
         /**
          * @brief httpConsumer::addNewHttpFrame
          *      add a new http frame in the list
          * @param frame
          */
-        void addNewHttpFrame(IHttpFrame * frame);
+        void addNewHttpFrame(Ihttpframe * frame);
 
         /**
          * @brief getCurrentHttpFrame
          *      retrieve current http frame object
          * @return
          */
-        IHttpFrame* getCurrentHttpFrame();
+        Ihttpframe* getCurrentHttpFrame();
 
     private:
 
@@ -206,7 +206,7 @@ class httpConsumer
          * @brief httpFrameList
          *      list of http frames
          */
-        std::vector<IHttpFrame*> httpFrameList;
+        std::vector<Ihttpframe*> httpFrameList;
 
 };
 

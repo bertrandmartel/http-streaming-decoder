@@ -6,11 +6,11 @@
     @author Bertrand Martel
     @version 1.0
 */
-#include "Httpconsumer.h"
+#include "httpconsumer.h"
 #include <iostream>
-#include "protocol/http/Httpparser.h"
+#include "protocol/http/httpparser.h"
 #include <QString>
-#include "protocol/http/Httpstates.h"
+#include "protocol/http/httpstates.h"
 
 using namespace std;
 
@@ -19,7 +19,7 @@ using namespace std;
  *      Consumer client of http decoder<br/>
  *      This object permits to store http life cycle into your own design and monitor your parsing in a blocking or non-blocking socket configuration
  */
-httpConsumer::httpConsumer()
+httpconsumer::httpconsumer()
 {
     QByteArray bufferVal("");
     this->buffer=bufferVal;
@@ -35,7 +35,7 @@ httpConsumer::httpConsumer()
  * @brief httpConsumer::~httpConsumer
  *      destruct => clean ptrs
  */
-httpConsumer::~httpConsumer()
+httpconsumer::~httpconsumer()
 {
 }
 
@@ -43,7 +43,7 @@ httpConsumer::~httpConsumer()
  * @brief httpConsumer::clearBuffer
  *      clear current buffer
  */
-void httpConsumer::clearBuffer()
+void httpconsumer::clearBuffer()
 {
     buffer.clear();
 }
@@ -56,7 +56,7 @@ void httpConsumer::clearBuffer()
  * @return
  *      pointer to data
  */
-int httpConsumer::appendToBuffer(QByteArray* data)
+int httpconsumer::appendToBuffer(QByteArray* data)
 {
     return buffer.append(data->data()).size();
 }
@@ -67,7 +67,7 @@ int httpConsumer::appendToBuffer(QByteArray* data)
  * @return
  *
  */
-bool httpConsumer::isFinishedProcessing()
+bool httpconsumer::isFinishedProcessing()
 {
     return finishedProcessing;
 }
@@ -77,7 +77,7 @@ bool httpConsumer::isFinishedProcessing()
  *      retrieve current buffer
  *@return
  */
-QByteArray httpConsumer::getBuffer()
+QByteArray httpconsumer::getBuffer()
 {
     return buffer;
 }
@@ -87,7 +87,7 @@ QByteArray httpConsumer::getBuffer()
  *      set processing frame state
  * @param processing
  */
-void httpConsumer::setFinishedProcessing(bool processing)
+void httpconsumer::setFinishedProcessing(bool processing)
 {
     finishedProcessing=processing;
 }
@@ -97,7 +97,7 @@ void httpConsumer::setFinishedProcessing(bool processing)
  *      set debug mode for consumer
  * @param debug
  */
-void httpConsumer::setDebug(bool debugArg)
+void httpconsumer::setDebug(bool debugArg)
 {
     debug=debugArg;
 }
@@ -106,7 +106,7 @@ void httpConsumer::setDebug(bool debugArg)
  * @brief bodyIndex
  *      index of body in buffer element
  */
-int httpConsumer::getBodyIndex()
+int httpconsumer::getBodyIndex()
 {
     return bodyIndex;
 }
@@ -116,7 +116,7 @@ int httpConsumer::getBodyIndex()
  *      set body index
  * @param bodyIndexArg
  */
-void httpConsumer::setBodyIndex(int bodyIndexArg)
+void httpconsumer::setBodyIndex(int bodyIndexArg)
 {
     bodyIndex=bodyIndexArg;
 }
@@ -125,7 +125,7 @@ void httpConsumer::setBodyIndex(int bodyIndexArg)
  * @brief bodyProcess
  *      get to know if HTTP body is to be parsed or not
  */
-bool httpConsumer::getBodyProcess()
+bool httpconsumer::getBodyProcess()
 {
     return bodyProcess;
 }
@@ -135,7 +135,7 @@ bool httpConsumer::getBodyProcess()
  *      set HTTP body parsing state
  * @param processArg
  */
-void httpConsumer::setBodyProcess(bool processArg)
+void httpconsumer::setBodyProcess(bool processArg)
 {
     bodyProcess=processArg;
 }
@@ -144,7 +144,7 @@ void httpConsumer::setBodyProcess(bool processArg)
  * @brief bodyLength
  *      length of body
  */
-int  httpConsumer::getBodyLength()
+int  httpconsumer::getBodyLength()
 {
     return bodyLength;
 }
@@ -154,7 +154,7 @@ int  httpConsumer::getBodyLength()
  *      set body length
  * @param length
  */
-void httpConsumer::setBodyLength(int length)
+void httpconsumer::setBodyLength(int length)
 {
     bodyLength=length;
 }
@@ -163,7 +163,7 @@ void httpConsumer::setBodyLength(int length)
  * @brief httpState
  *      http parser current state
  */
-int  httpConsumer::getHttpState()
+int  httpconsumer::getHttpState()
 {
     return httpState;
 }
@@ -173,7 +173,7 @@ int  httpConsumer::getHttpState()
  *      set http parser state
  * @param http_state
  */
-void httpConsumer::setHttpState(int http_state)
+void httpconsumer::setHttpState(int http_state)
 {
     httpState=http_state;
 }
@@ -183,7 +183,7 @@ void httpConsumer::setHttpState(int http_state)
  *      debug state
  * @return
  */
-bool httpConsumer::isDebug()
+bool httpconsumer::isDebug()
 {
     return debug;
 }
@@ -193,7 +193,7 @@ bool httpConsumer::isDebug()
  *      retrieve http frame object list
  * @return
  */
-std::vector<IHttpFrame*> httpConsumer::getHttpFrameList()
+std::vector<Ihttpframe*> httpconsumer::getHttpFrameList()
 {
     return httpFrameList;
 }
@@ -203,7 +203,7 @@ std::vector<IHttpFrame*> httpConsumer::getHttpFrameList()
  *      add a new http frame in the list
  * @param frame
  */
-void httpConsumer::addNewHttpFrame(IHttpFrame * frame)
+void httpconsumer::addNewHttpFrame(Ihttpframe * frame)
 {
     httpFrameList.push_back(frame);
 }
@@ -213,7 +213,7 @@ void httpConsumer::addNewHttpFrame(IHttpFrame * frame)
  *      retrieve current http frame object
  * @return
  */
-IHttpFrame* httpConsumer::getCurrentHttpFrame()
+Ihttpframe* httpconsumer::getCurrentHttpFrame()
 {
     if (httpFrameList.size()>0)
         return httpFrameList.at(httpFrameList.size()-1);

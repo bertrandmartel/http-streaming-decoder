@@ -9,7 +9,7 @@
 #ifndef HTTPDECODER_H
 #define HTTPDECODER_H
 
-#include "protocol/inter/http/Httpconsumer.h"
+#include "protocol/inter/http/httpconsumer.h"
 #include "QByteArray"
 
 /**
@@ -17,12 +17,12 @@
  *
  *      Http decoder main input class
  */
-class HttpDecoder
+class httpdecoder
 {
 
 public :
 
-    HttpDecoder();
+    httpdecoder();
 
     /**
      * @brief httpDecode
@@ -33,7 +33,7 @@ public :
      * @param data
      *      non-blocking or blocking data stream
      */
-    void httpDecode(httpConsumer * consumer,QByteArray* data);
+    void httpdecode(httpconsumer * consumer,QByteArray* data);
 
 };
 
