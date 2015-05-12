@@ -31,8 +31,6 @@ HEADERS += \
 
 QMAKE_CLEAN += -r $${PWD}/$${DESTDIR}
 
-QMAKE_POST_LINK +=$$quote(rsync -avm --include=*/ --include=*.h --exclude=* $${PWD}/ $${PWD}/$${DESTDIR})
-
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../httpdecoder/release/release/ -lhttpdecoder
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../httpdecoder/release/debug/ -lhttpdecoder
 else:unix: LIBS += -L$$PWD/../httpdecoder/release/ -lhttpdecoder
