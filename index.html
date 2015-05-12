@@ -49,28 +49,28 @@
 
 <p><b>PROGRAM SYNTAX for decoding HTTP frames</b></p>
 
-<p>First you have to declare the <code>HttpDecoder</code> object</p>
+<p>First you have to declare the <code>httpdecoder</code> object</p>
 
-<p><code>HttpDecoder decoder;</code></p>
+<p><code>httpdecoder decoder;</code></p>
 
-<p>Then instantiate a new <code>httpConsumer</code> : this object will monitor your data streaming decoding and will contain decoded frame(s)</p>
+<p>Then instantiate a new <code>httpconsumer</code> : this object will monitor your data streaming decoding and will contain decoded frame(s)</p>
 
-<p><code>httpConsumer *consumer = new httpConsumer;</code></p>
+<p><code>httpconsumer *consumer = new httpconsumer;</code></p>
 
 <p>For both of them you'll need these import : <br>
-<code>#include "protocol/http/HttpDecoder.h"</code><br>
-<code>#include "protocol/inter/http/Httpconsumer.h"</code><br></p>
+<code>#include "protocol/http/httpdecoder.h"</code><br>
+<code>#include "protocol/inter/http/httpconsumer.h"</code><br></p>
 
 <p>Your data streaming will be put to a <code>QByteArray *</code> to be sent to http decoder :<br>
-<code>QByteArray *httpFrame = new QByteArray("POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n")</code></p>
+<code>QByteArray *httpframe = new QByteArray("POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n")</code></p>
 
 <p>Eventually decode with : </p>
 
-<p><code>decoder.httpDecode(consumer,httpFrame);</code></p>
+<p><code>decoder.httpdecode(consumer,httpframe);</code></p>
 
 <p>Result of decoding will be in your pointer to consumer object you have just created</p>
 
-<p>You can access to decoded frame with <code>consumer-&gt;getHttpFrameList()</code> which is a <code>vector&lt;httpConsumer*&gt;</code> you can iterate</p>
+<p>You can access to decoded frame with <code>consumer-&gt;getHttpFrameList()</code> which is a <code>vector&lt;httpconsumer*&gt;</code> you can iterate</p>
 
 <p>Then you can remove frame you have treated and re-loop to decode again with the same object if you want to</p>
 
@@ -93,15 +93,15 @@
 
 <p><b>Exemple</b></p>
 
-<p><code>HttpDecoder decoder;</code></p>
+<p><code>httpdecoder decoder;</code></p>
 
-<p><code>httpConsumer *consumer = new httpConsumer;</code></p>
+<p><code>httpconsumer *consumer = new httpConsumer;</code></p>
 
-<p><code>QByteArray *httpFrame = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";</code></p>
+<p><code>QByteArray *httpframe = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";</code></p>
 
-<p><code>httpFrame = new QByteArray(data1);</code></p>
+<p><code>httpframe = new QByteArray(data1);</code></p>
 
-<p><code>decoder.httpDecode(consumer,httpFrame);</code></p>
+<p><code>decoder.httpdecode(consumer,httpframe);</code></p>
 
 <p>From consumer object <code>consumer-&gt;getHttpFrameList()</code> you can extract those fields : </p>
 
