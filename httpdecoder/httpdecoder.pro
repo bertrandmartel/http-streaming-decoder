@@ -3,7 +3,6 @@
 # Project created by QtCreator 2015-05-10T21:57:26
 #
 #-------------------------------------------------
-
 QT       -= gui
 
 TARGET = httpdecoder
@@ -11,26 +10,28 @@ TEMPLATE = lib
 
 DEFINES += HTTPDECODER_LIBRARY
 
-DESTDIR = ./release
+DESTDIR = release
+
+OBJECTS_DIR=bin
 
 SOURCES += \
-    protocol/inter/http/Httpconsumer.cpp \
-    protocol/http/Httpdecoder.cpp \
-    protocol/inter/http/Httpframe.cpp \
-    protocol/http/Httpparser.cpp \
-    utils/Stringutils.cpp
+    protocol/http/httpdecoder.cpp \
+    protocol/http/httpparser.cpp \
+    protocol/inter/http/httpconsumer.cpp \
+    protocol/inter/http/httpframe.cpp \
+    utils/stringutils.cpp
 
 HEADERS +=\
-    protocol/inter/http/Httpconsumer.h \
     protocol/http/Httpdecoder.h \
-    protocol/http/Httpdecoder_global.h \
-    protocol/inter/http/Httpframe.h \
-    protocol/http/Httpparser.h \
-    protocol/http/Httpstates.h \
     protocol/inter/http/IhttpFrame.h \
-    utils/Stringutils.h \
-    protocol/http/HttpDecoder.h \
-    protocol/http/httpconstants.h
+    protocol/http/httpconstants.h \
+    protocol/http/httpdecoder.h \
+    protocol/http/httpparser.h \
+    protocol/http/httpstates.h \
+    protocol/inter/http/httpconsumer.h \
+    protocol/inter/http/httpframe.h \
+    utils/stringutils.h \
+    protocol/http/httpdecoder_global.h
 
 unix:!symbian {
     maemo5 {
@@ -40,3 +41,7 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+QMAKE_CLEAN += -r $${PWD}/$${DESTDIR}
+
+QMAKE_POST_LINK +=$$quote(rsync -avm --include=*/ --include=*.h --exclude=* $${PWD}/$${SOURCES_DIR}/ $${PWD}/$${DESTDIR})
