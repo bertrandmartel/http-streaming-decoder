@@ -1,1 +1,4 @@
 *.user
+build-httpdecoder-Desktop-Release/*
+build-httpdecoder-Desktop-Debug/*
+*.o
