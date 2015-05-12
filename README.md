@@ -25,29 +25,29 @@ This project uses QtCore and is build with qmake utility (you can use QtCreator 
 
 <b>PROGRAM SYNTAX for decoding HTTP frames</b>
 
-First you have to declare the ``HttpDecoder`` object
+First you have to declare the ``httpdecoder`` object
 
-``HttpDecoder decoder;``
+``httpdecoder decoder;``
 
-Then instantiate a new ``httpConsumer`` : this object will monitor your data streaming decoding and will contain decoded frame(s)
+Then instantiate a new ``httpconsumer`` : this object will monitor your data streaming decoding and will contain decoded frame(s)
 
-``httpConsumer *consumer = new httpConsumer;``
+``httpconsumer *consumer = new httpconsumer;``
 
 For both of them you'll need these import : <br/>
-``#include "protocol/http/HttpDecoder.h"``<br/>
-``#include "protocol/inter/http/Httpconsumer.h"``<br/>
+``#include "protocol/http/httpdecoder.h"``<br/>
+``#include "protocol/inter/http/httpconsumer.h"``<br/>
 
 
 Your data streaming will be put to a ``QByteArray *`` to be sent to http decoder :<br/>
-``QByteArray *httpFrame = new QByteArray("POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n")``
+``QByteArray *httpframe = new QByteArray("POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n")``
 
 Eventually decode with : 
 
-``decoder.httpDecode(consumer,httpFrame);``
+``decoder.httpdecode(consumer,httpFrame);``
 
 Result of decoding will be in your pointer to consumer object you have just created
 
-You can access to decoded frame with ``consumer->getHttpFrameList()`` which is a ``vector<httpConsumer*>`` you can iterate
+You can access to decoded frame with ``consumer->getHttpFrameList()`` which is a ``vector<httpconsumer*>`` you can iterate
 
 Then you can remove frame you have treated and re-loop to decode again with the same object if you want to
 
@@ -67,15 +67,15 @@ You can open .pro file of both with qtcreator and build project
 
 <b>Exemple</b>
 
-``HttpDecoder decoder;``
+``httpdecoder decoder;``
 
-``httpConsumer *consumer = new httpConsumer;``
+``httpconsumer *consumer = new httpconsumer;``
 
-``QByteArray *httpFrame = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";``
+``QByteArray *httpframe = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";``
 
-``httpFrame = new QByteArray(data1);``
+``httpframe = new QByteArray(data1);``
 
-``decoder.httpDecode(consumer,httpFrame);``
+``decoder.httpdecode(consumer,httpframe);``
 
 From consumer object ``consumer->getHttpFrameList()`` you can extract those fields : 
 
