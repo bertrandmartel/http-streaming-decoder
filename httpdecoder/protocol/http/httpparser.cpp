@@ -173,9 +173,9 @@ void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
             int indexOfPoint = data->indexOf(":");
             if (indexOfPoint!=-1)
             {
-               string currentHeader(QString(data->data()).toStdString());
+               string currentHeader(QString(data->data()).trimmed().toStdString());
 
-                (*consumer->getCurrentHttpFrame()->getHeaders())[currentHeader.substr(0,indexOfPoint)]=currentHeader.substr(indexOfPoint+1,currentHeader.length());
+               (*consumer->getCurrentHttpFrame()->getHeaders())[currentHeader.substr(0,indexOfPoint)]=QString(currentHeader.substr(indexOfPoint+1,currentHeader.length()).data()).trimmed().toStdString();
                 if (debug)
                     cout << currentHeader.substr(0,indexOfPoint).data() << " => " <<currentHeader.substr(indexOfPoint+1,currentHeader.length()).data() <<endl;
             }
