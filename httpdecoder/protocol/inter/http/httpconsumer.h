@@ -158,6 +158,14 @@ class httpconsumer
          */
         Ihttpframe* getCurrentHttpFrame();
 
+        /**
+         * @brief setHttpFrameList
+         *      set http frame list object
+         * @param list
+         *      pointer to vector of IHttp frames
+         */
+        void setHttpFrameList(std::vector<Ihttpframe*> *list);
+
     private:
 
         /**

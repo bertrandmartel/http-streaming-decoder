@@ -208,6 +208,11 @@ void httpconsumer::addNewHttpFrame(Ihttpframe * frame)
     httpFrameList.push_back(frame);
 }
 
+void httpconsumer::setHttpFrameList(std::vector<Ihttpframe*> *list)
+{
+    httpFrameList=*list;
+}
+
 /**
  * @brief getCurrentHttpFrame
  *      retrieve current http frame object
