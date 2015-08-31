@@ -12,7 +12,7 @@ TARGET = httpdecoder-test
 
 DEPENDPATH += . ../httpdecoder
 INCLUDEPATH += ../httpdecoder
-LIBS += -L../httpdecoder -lhttpdecoder
+LIBS += -L../httpdecoder/release -lhttpdecoder
 
 DESTDIR = release
 

@@ -7,6 +7,7 @@ QT       -= gui
 
 TARGET = httpdecoder
 TEMPLATE = lib
+CONFIG += staticlib
 
 DEFINES += HTTPDECODER_LIBRARY
 
