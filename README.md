@@ -1,4 +1,4 @@
-# HTTP streaming decoder in C++ #
+# HTTP streaming decoder #
 
 http://akinaru.github.io/http-streaming-decoder-cpp/
 
