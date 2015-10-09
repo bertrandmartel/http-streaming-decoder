@@ -5,7 +5,7 @@
     <title>http-streaming-decoder-cpp by akinaru</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
@@ -20,11 +20,11 @@
 
     <section class="main-content">
       <h1>
-<a id="http-streaming-decoder-in-c" class="anchor" href="#http-streaming-decoder-in-c" aria-hidden="true"><span class="octicon octicon-link"></span></a>HTTP streaming decoder in C++</h1>
+<a id="http-streaming-decoder" class="anchor" href="#http-streaming-decoder" aria-hidden="true"><span class="octicon octicon-link"></span></a>HTTP streaming decoder</h1>
 
 <p><a href="http://akinaru.github.io/http-streaming-decoder-cpp/">http://akinaru.github.io/http-streaming-decoder-cpp/</a></p>
 
-<p><i>Last update 10/05/2015</i></p>
+<p><i>Last update 09/10/2015</i></p>
 
 <p>HTTP protocol decoder</p>
 
@@ -47,7 +47,7 @@
 
 <hr>
 
-<p><b>PROGRAM SYNTAX for decoding HTTP frames</b></p>
+<p><b>Program syntax for decoding HTTP frames</b></p>
 
 <p>First you have to declare the <code>httpdecoder</code> object</p>
 
@@ -66,28 +66,16 @@
 
 <p>Eventually decode with : </p>
 
-<p><code>decoder.httpdecode(consumer,httpframe);</code></p>
-
-<p>Result of decoding will be in your pointer to consumer object you have just created</p>
-
-<p>You can access to decoded frame with <code>consumer-&gt;getHttpFrameList()</code> which is a <code>vector&lt;httpconsumer*&gt;</code> you can iterate</p>
-
-<p>Then you can remove frame you have treated and re-loop to decode again with the same object if you want to</p>
-
-<p>Complete exemple in ./http-decoder-test/launcher.cpp</p>
-
-<hr>
-
-<p><b>How to build</b></p>
-
-<p>This is composed of 2 projects:</p>
+<p><code>decoder.httpdecode(consumer,httpFrame);</code></p>
 
 <ul>
-<li>http decoder library project</li>
-<li>http decoder test </li>
+<li><p>Result of decoding will be in your pointer to consumer object you have just created</p></li>
+<li><p>You can access to decoded frame with <code>consumer-&gt;getHttpFrameList()</code> which is a <code>vector&lt;httpconsumer*&gt;</code> you can iterate</p></li>
+<li><p>Then you can remove frame you have treated and re-loop to decode again with the same object if you want to</p></li>
+<li><p>You must delete your consumer when you are done with it (socket destroyed / destructor ...)</p></li>
 </ul>
 
-<p>You can open .pro file of both with qtcreator and build project</p>
+<p>Complete exemple in ./http-decoder-test/launcher.cpp</p>
 
 <hr>
 
@@ -156,6 +144,19 @@
 
 <hr>
 
+<p><b>How to build</b></p>
+
+<p>This is composed of 2 projects:</p>
+
+<ul>
+<li>http decoder library project</li>
+<li>http decoder test </li>
+</ul>
+
+<p>You can open .pro file of both with qtcreator and build project</p>
+
+<hr>
+
 <ul>
 <li>Project is Qt4 compliant</li>
 <li>You can build it with qmake</li>
@@ -163,8 +164,6 @@
 <li>Specification from <a href="https://www.ietf.org/rfc/rfc2616.txt">https://www.ietf.org/rfc/rfc2616.txt</a>
 </li>
 </ul>
-
-<p>TODO : plan to remove QtCore dependencies for a more portable solution</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/akinaru/http-streaming-decoder-cpp">http-streaming-decoder-cpp</a> is maintained by <a href="https://github.com/akinaru">akinaru</a>.</span>
@@ -187,4 +186,3 @@
 
   </body>
 </html>
-
