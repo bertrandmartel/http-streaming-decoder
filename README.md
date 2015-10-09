@@ -2,7 +2,7 @@
 
 http://akinaru.github.io/http-streaming-decoder-cpp/
 
-<i>Last update 10/05/2015</i>
+<i>Last update 09/10/2015</i>
 
 HTTP protocol decoder
 
@@ -23,7 +23,7 @@ This project uses QtCore and is build with qmake utility (you can use QtCreator 
 
 <hr/>
 
-<b>PROGRAM SYNTAX for decoding HTTP frames</b>
+<b>Program syntax for decoding HTTP frames</b>
 
 First you have to declare the ``httpdecoder`` object
 
@@ -45,23 +45,15 @@ Eventually decode with :
 
 ``decoder.httpdecode(consumer,httpFrame);``
 
-Result of decoding will be in your pointer to consumer object you have just created
+* Result of decoding will be in your pointer to consumer object you have just created
 
-You can access to decoded frame with ``consumer->getHttpFrameList()`` which is a ``vector<httpconsumer*>`` you can iterate
+* You can access to decoded frame with ``consumer->getHttpFrameList()`` which is a ``vector<httpconsumer*>`` you can iterate
 
-Then you can remove frame you have treated and re-loop to decode again with the same object if you want to
+* Then you can remove frame you have treated and re-loop to decode again with the same object if you want to
+
+* You must delete your consumer when you are done with it (socket destroyed / destructor ...)
 
 Complete exemple in ./http-decoder-test/launcher.cpp
-
-<hr/>
-
-<b>How to build</b>
-
-This is composed of 2 projects:
-* http decoder library project
-* http decoder test 
-
-You can open .pro file of both with qtcreator and build project
 
 <hr/>
 
@@ -90,9 +82,18 @@ From consumer object ``consumer->getHttpFrameList()`` you can extract those fiel
 
 <hr/>
 
+<b>How to build</b>
+
+This is composed of 2 projects:
+* http decoder library project
+* http decoder test 
+
+You can open .pro file of both with qtcreator and build project
+
+<hr/>
+
 * Project is Qt4 compliant
 * You can build it with qmake
 * Development on QtCreator
 * Specification from https://www.ietf.org/rfc/rfc2616.txt
 
-TODO : plan to remove QtCore dependencies for a more portable solution
