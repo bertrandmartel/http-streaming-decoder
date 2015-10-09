@@ -13,7 +13,6 @@ using namespace std;
 
 httpframe::httpframe()
 {
-    headers=new map<string,string>();
     statusCode=0;
     finishedProcessing=false;
     uri="";
@@ -27,8 +26,6 @@ httpframe::httpframe()
  */
 httpframe::~httpframe()
 {
-    delete headers;
-    headers=0;
 }
 
 /**
@@ -76,7 +73,7 @@ int httpframe::getStatusCode()
  *      retrieve http headers
  * @return
  */
-map< std::string,std::string >* httpframe::getHeaders()
+map< std::string,std::string > httpframe::getHeaders()
 {
     return headers;
 }
@@ -148,4 +145,8 @@ void httpframe::setStatusCode(int statusCodeArg)
 bool httpframe::isFinishedProcessing()
 {
     return finishedProcessing;
+}
+
+void httpframe::setHeaders(std::map<std::string,std::string> header){
+    this->headers=header;
 }

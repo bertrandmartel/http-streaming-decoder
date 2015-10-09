@@ -108,7 +108,7 @@ public:
      *      retrieve http headers
      * @return
      */
-     std::map< std::string,std::string > *getHeaders();
+     std::map< std::string,std::string > getHeaders();
 
     /**
      * @brief httpConsumer::getProcessState
@@ -125,6 +125,12 @@ public:
      */
      void setFinishedProcessing(bool processing);
 
+     /**
+      * @brief setHeaders
+      *     set http headers
+      * @param header
+      */
+     void setHeaders(std::map<std::string,std::string> header);
 
 private :
 
@@ -164,7 +170,7 @@ private :
      * @brief headers
      *      HTTP headers
      */
-    std::map<std::string,std::string> *headers;
+    std::map<std::string,std::string> headers;
 
     /**
      * @brief processFrame

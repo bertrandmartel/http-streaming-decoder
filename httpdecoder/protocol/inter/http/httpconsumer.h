@@ -37,6 +37,7 @@
 #include "map"
 #include "IhttpFrame.h"
 #include "vector"
+#include "httpframe.h"
 
 /**
  * @brief httpConsumer::httpConsumer
@@ -165,21 +166,21 @@ class httpconsumer
          *      retrieve http frame object list
          * @return
          */
-        std::vector<Ihttpframe*> getHttpFrameList();
+        std::vector<httpframe> getHttpFrameList();
 
         /**
          * @brief httpConsumer::addNewHttpFrame
          *      add a new http frame in the list
          * @param frame
          */
-        void addNewHttpFrame(Ihttpframe * frame);
+        void addNewHttpFrame(httpframe frame);
 
         /**
          * @brief getCurrentHttpFrame
          *      retrieve current http frame object
          * @return
          */
-        Ihttpframe* getCurrentHttpFrame();
+        httpframe *getCurrentHttpFrame();
 
         /**
          * @brief setHttpFrameList
@@ -187,7 +188,7 @@ class httpconsumer
          * @param list
          *      pointer to vector of IHttp frames
          */
-        void setHttpFrameList(std::vector<Ihttpframe*> *list);
+        void setHttpFrameList(std::vector<httpframe> list);
 
     private:
 
@@ -237,7 +238,7 @@ class httpconsumer
          * @brief httpFrameList
          *      list of http frames
          */
-        std::vector<Ihttpframe*> httpFrameList;
+        std::vector<httpframe> httpFrameList;
 
 };
 

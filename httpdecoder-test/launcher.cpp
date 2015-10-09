@@ -41,7 +41,6 @@
     @author Bertrand Martel
     @version 1.0
 */
-#include <QCoreApplication>
 #include "protocol/http/httpdecoder.h"
 #include "protocol/inter/http/httpconsumer.h"
 #include <QString>
@@ -88,9 +87,7 @@ const char * multipleFrameWithError3="HTTP/1.1 200 OK\r\n\r\nqsdqsfefneifnizngin
  *
  * @param args
  */
-int main(int argc, char *argv[])
-{
-    QCoreApplication a(argc, argv);
+int main(int argc, char *argv[]) {
 
     httpdecoder decoder; //must be called only once (TODO: memory leak on multiple call)
     httpconsumer *consumer = new httpconsumer;
@@ -98,21 +95,27 @@ int main(int argc, char *argv[])
     //debug your consumer here
     //consumer->setDebug(true);
 
+    launcher::testStandaloneHttpFrames(consumer,decoder);
+    launcher::testStandaloneHttpSeparatedByCRLF(consumer,decoder);
+    launcher::testOnCharChunkedHttpFrame(consumer,decoder);
     launcher::testMultipleFrames(consumer,decoder);
+    launcher::testMultipleFramesWithError(consumer,decoder);
+
+    launcher::displayInfo(consumer);
 
     delete consumer;
     consumer=0;
 
-    return a.exec();
+    return 0;
 }
 
 /**
  * @brief launcher::testStandaloneHttpFrames
  *      Test for one standalone http frame
  */
-void launcher::testStandaloneHttpFrames(httpconsumer * consumer,httpdecoder decoder)
-{
-    QByteArray *httpFrame;
+void launcher::testStandaloneHttpFrames(httpconsumer * consumer,httpdecoder decoder) {
+
+    QByteArray *httpFrame=0;
 
     //[TEST OK] one standalone http frame
     cout << "####################################" << endl;
@@ -120,130 +123,143 @@ void launcher::testStandaloneHttpFrames(httpconsumer * consumer,httpdecoder deco
 
     httpFrame = new QByteArray(data1);
     decoder.httpdecode(consumer,httpFrame);
+    delete httpFrame;
+    httpFrame=0;
 
-    launcher::displayInfo(consumer);
     cout << "####################################" << endl;
     cout << "HTTP request GET test " << endl;
 
+
     httpFrame = new QByteArray(data2);
     decoder.httpdecode(consumer,httpFrame);
+    delete httpFrame;
+    httpFrame=0;
 
-    launcher::displayInfo(consumer);
     cout << "####################################" << endl;
     cout << "HTTP response with body test " << endl;
 
+
     httpFrame = new QByteArray(data3);
     decoder.httpdecode(consumer,httpFrame);
+    delete httpFrame;
+    httpFrame=0;
 
-    launcher::displayInfo(consumer);
     cout << "####################################" << endl;
     cout << "HTTP response without body test " << endl;
 
     httpFrame = new QByteArray(data4);
     decoder.httpdecode(consumer,httpFrame);
+    delete httpFrame;
+    httpFrame=0;
 
-    launcher::displayInfo(consumer);
     cout << "####################################" << endl;
     cout << "HTTP request POST test " << endl;
 
     httpFrame = new QByteArray(data5);
     decoder.httpdecode(consumer,httpFrame);
-
-    launcher::displayInfo(consumer);
-    cout << "####################################" << endl;
-
     delete httpFrame;
     httpFrame=0;
+
+    //launcher::displayInfo(consumer);
+
+    cout << "####################################" << endl;
 }
 
 /**
  * @brief launcher::testStandaloneHttpSeparatedByCRLF
  *      Test for one standalone HTTP frame separated with CRLF (one line at the time)
  */
-void launcher::testStandaloneHttpSeparatedByCRLF(httpconsumer * consumer,httpdecoder decoder)
-{
+void launcher::testStandaloneHttpSeparatedByCRLF(httpconsumer * consumer,httpdecoder decoder) {
+
     QByteArray *httpFrame;
 
     //[TEST OK] one standalone http frame chunked according to carriage return
 
     httpFrame = new QByteArray(chunk1);
     decoder.httpdecode(consumer,httpFrame);
+    delete httpFrame;
+    httpFrame=0;
 
     httpFrame = new QByteArray(chunk2);
     decoder.httpdecode(consumer,httpFrame);
+    delete httpFrame;
+    httpFrame=0;
 
     httpFrame = new QByteArray(chunk3);
     decoder.httpdecode(consumer,httpFrame);
+    delete httpFrame;
+    httpFrame=0;
 
     httpFrame = new QByteArray(chunk4);
     decoder.httpdecode(consumer,httpFrame);
+    delete httpFrame;
+    httpFrame=0;
 
     httpFrame = new QByteArray(chunk5);
     decoder.httpdecode(consumer,httpFrame);
-
-    launcher::displayInfo(consumer);
-    cout << "####################################" << endl;
-
     delete httpFrame;
     httpFrame=0;
+
+    //launcher::displayInfo(consumer);
+    cout << "####################################" << endl;
 }
 
 /**
  * @brief launcher::testOnCharChunkedHttpFrame
  *          test for one char at the time
  */
-void launcher::testOnCharChunkedHttpFrame(httpconsumer * consumer,httpdecoder decoder)
-{
+void launcher::testOnCharChunkedHttpFrame(httpconsumer * consumer,httpdecoder decoder) {
+
     QByteArray *httpFrame;
 
     //[TEST OK] one-char-chunked http frame
 
-    for (int i = 0; i<chunkedChar2.length() ;i++)
-    {
+    for (int i = 0; i<chunkedChar2.length() ;i++) {
+
         httpFrame = new QByteArray();
         httpFrame->append(chunkedChar2[i]);
         decoder.httpdecode(consumer,httpFrame);
-    }
-    launcher::displayInfo(consumer);
+        delete httpFrame;
+        httpFrame=0;
 
-    delete httpFrame;
-    httpFrame=0;
+    }
+    //launcher::displayInfo(consumer);
 }
 
 /**
  * @brief launcher::testMultipleFrames
  *      test of multiple http frame on the row
  */
-void launcher::testMultipleFrames(httpconsumer * consumer,httpdecoder decoder)
-{
+void launcher::testMultipleFrames(httpconsumer * consumer,httpdecoder decoder) {
+
     QByteArray *httpFrame;
 
     //[TEST OK] multiple complete http frames input
 
     httpFrame = new QByteArray(multipleFrame2);
     decoder.httpdecode(consumer,httpFrame);
-    launcher::displayInfo(consumer);
-
     delete httpFrame;
     httpFrame=0;
+
+    //launcher::displayInfo(consumer);
 }
 
 /**
  * @brief launcher::testMultipleFramesWithError
  *      test for error encapsulated in mutliple frames
  */
-void launcher::testMultipleFramesWithError(httpconsumer * consumer,httpdecoder decoder)
-{
+void launcher::testMultipleFramesWithError(httpconsumer * consumer,httpdecoder decoder) {
+
     QByteArray *httpFrame;
 
     //[TEST OK] multiple http frames input with error in between frames
 
     httpFrame = new QByteArray(multipleFrameWithError3);
     decoder.httpdecode(consumer,httpFrame);
-    launcher::displayInfo(consumer);
-
     delete httpFrame;
     httpFrame=0;
+
+    //launcher::displayInfo(consumer);
 }
 
 /**
@@ -251,33 +267,46 @@ void launcher::testMultipleFramesWithError(httpconsumer * consumer,httpdecoder d
  *      display all frames decoded with http decoder and display all data from that
  * @param consumer
  */
-void launcher::displayInfo(httpconsumer* consumer)
-{
+void launcher::displayInfo(httpconsumer* consumer) {
+
     cout << "number of http frames detected : " << consumer->getHttpFrameList().size() << endl;
 
     cout << "####################################" << endl;
 
-    for (int i = 0 ;i  < consumer->getHttpFrameList().size();i++)
-    {
-        if (consumer->getHttpFrameList().at(i)->isFinishedProcessing())
-        {
+
+    for (int i = 0 ;i  < consumer->getHttpFrameList().size();i++) {
+
+        if (consumer->getHttpFrameList().at(i).isFinishedProcessing()) {
+
+
             cout << "####################################" << endl;
             cout << "New HTTP Frame" << endl;
-            cout << "uri         : " << consumer->getHttpFrameList().at(i)->getUri()         << endl;
-            cout << "method      : " << consumer->getHttpFrameList().at(i)->getMethod()      << endl;
-            cout << "body        : " << consumer->getHttpFrameList().at(i)->getBody()        << endl;
-            cout << "querystring : " << consumer->getHttpFrameList().at(i)->getQueryString() << endl;
-            cout << "status code : " << consumer->getHttpFrameList().at(i)->getStatusCode()  << endl;
+            cout << "uri         : " << consumer->getHttpFrameList().at(i).getUri()         << endl;
 
+            cout << "method      : " << consumer->getHttpFrameList().at(i).getMethod()      << endl;
+            cout << "body        : " << consumer->getHttpFrameList().at(i).getBody()        << endl;
+            cout << "querystring : " << consumer->getHttpFrameList().at(i).getQueryString() << endl;
+            cout << "status code : " << consumer->getHttpFrameList().at(i).getStatusCode()  << endl;
             cout << "headers : " << endl;
 
-            for (std::map<std::string,std::string>::iterator it=consumer->getHttpFrameList().at(i)->getHeaders()->begin(); it!=consumer->getHttpFrameList().at(i)->getHeaders()->end(); ++it)
-                cout << "\t\t" << it->first << " => " << it->second << '\n';
+            if (consumer->getHttpFrameList().at(i).getHeaders().size()>0){
+
+               typedef std::map<std::string,std::string>::iterator it_type;
+
+               map<string,string> headers = consumer->getHttpFrameList().at(i).getHeaders();
+
+               for (it_type it=headers.begin(); it!=headers.end(); ++it){
+                    cout << "\t\t" << it->first << " => " << it->second << '\n';
+               }
+
+            }
             cout << "####################################" << endl;
+
         }
-        else
-        {
+        else {
             cout << "Current HTTP frame has not been processed correctly." << endl;
         }
+
     }
+
 }

@@ -193,7 +193,7 @@ bool httpconsumer::isDebug()
  *      retrieve http frame object list
  * @return
  */
-std::vector<Ihttpframe*> httpconsumer::getHttpFrameList()
+std::vector<httpframe> httpconsumer::getHttpFrameList()
 {
     return httpFrameList;
 }
@@ -203,14 +203,14 @@ std::vector<Ihttpframe*> httpconsumer::getHttpFrameList()
  *      add a new http frame in the list
  * @param frame
  */
-void httpconsumer::addNewHttpFrame(Ihttpframe * frame)
+void httpconsumer::addNewHttpFrame(httpframe frame)
 {
     httpFrameList.push_back(frame);
 }
 
-void httpconsumer::setHttpFrameList(std::vector<Ihttpframe*> *list)
+void httpconsumer::setHttpFrameList(std::vector<httpframe> list)
 {
-    httpFrameList=*list;
+    httpFrameList=list;
 }
 
 /**
@@ -218,10 +218,10 @@ void httpconsumer::setHttpFrameList(std::vector<Ihttpframe*> *list)
  *      retrieve current http frame object
  * @return
  */
-Ihttpframe* httpconsumer::getCurrentHttpFrame()
+httpframe *httpconsumer::getCurrentHttpFrame()
 {
     if (httpFrameList.size()>0)
-        return httpFrameList.at(httpFrameList.size()-1);
+        return &httpFrameList.at(httpFrameList.size()-1);
     else
         return 0;
 }

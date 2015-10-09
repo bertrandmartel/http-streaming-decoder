@@ -36,8 +36,8 @@
 
 using namespace std;
 
-httpdecoder::httpdecoder()
-{
+httpdecoder::httpdecoder() {
+
     httpconstants::static_init();
 }
 
@@ -50,30 +50,30 @@ httpdecoder::httpdecoder()
  * @param data
  *      non-blocking or blocking data stream
  */
-void httpdecoder::httpdecode(httpconsumer * consumer,QByteArray* data)
-{
+void httpdecoder::httpdecode(httpconsumer * consumer,QByteArray* data) {
+
     QByteArray value = *data;
     httpparser parser;
 
     QByteArray currentLine="";
 
-    if (consumer->getBuffer().length()!=0)
-    {
+    if (consumer->getBuffer().length()!=0){
+
         currentLine=consumer->getBuffer();
     }
     currentLine.append(value);
 
     int indexOfCarriage= currentLine.indexOf("\r\n");
 
-    if (indexOfCarriage!=-1)
-    {
-        while (indexOfCarriage!=-1)
-        {
+    if (indexOfCarriage!=-1){
+
+        while (indexOfCarriage!=-1) {
+
             currentLine="";
 
             // parse header
-            if (consumer->getBuffer().length()!=0)
-            {
+            if (consumer->getBuffer().length()!=0) {
+
                 currentLine=consumer->getBuffer();
                 consumer->clearBuffer();
             }
@@ -86,34 +86,34 @@ void httpdecoder::httpdecode(httpconsumer * consumer,QByteArray* data)
 
             parser.parseHttp(&temp,consumer);
 
-            if (currentLine.length()>(indexOfCarriage+2))
-            {
+            if (currentLine.length()>(indexOfCarriage+2)){
+
                 value = QString(currentLine).toStdString().substr(indexOfCarriage+2,currentLine.length()).data();
 
-                if (!consumer->getBodyProcess())
-                {
+                if (!consumer->getBodyProcess()){
+
                     indexOfCarriage=value.indexOf("\r\n");
                 }
-                else
-                {
-                    if (value.length()>=consumer->getBodyLength())
-                    {
+                else{
+
+                    if (value.length()>=consumer->getBodyLength()){
+
                         indexOfCarriage=consumer->getBodyLength();
                     }
-                    else
-                    {
+                    else{
+
                         indexOfCarriage=value.length();
                     }
                 }
             }
-            else
-            {
+            else{
+
                 indexOfCarriage=-1;
             }
         }
     }
-    else
-    {
+    else{
+
         // bufferize data
         consumer->appendToBuffer(&value);
     }

@@ -118,7 +118,7 @@ public:
      *      retrieve http headers
      * @return
      */
-    virtual std::map< std::string,std::string > *getHeaders()= 0;
+    virtual std::map< std::string,std::string > getHeaders()= 0;
 
     /**
      * @brief httpConsumer::getProcessState

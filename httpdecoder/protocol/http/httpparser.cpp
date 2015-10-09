@@ -82,14 +82,14 @@ void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
     {
         case HTTP_STATE_INIT:
         {
-            consumer->addNewHttpFrame(new httpframe());
+            httpframe frame;
+
+            consumer->addNewHttpFrame(frame);
             consumer->setBodyProcess(false);
 
             consumer->getCurrentHttpFrame()->setBody("");
 
-            //TODO:test if pointer null here
-
-            (*consumer->getCurrentHttpFrame()->getHeaders()).clear();
+            consumer->getCurrentHttpFrame()->getHeaders().clear();
 
             consumer->setBodyLength(0);
             consumer->setBodyIndex(0);
@@ -106,14 +106,14 @@ void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
 
             std::vector<std::string>  initStateLine =  stringutils::split(QString(data->data()).toStdString(), ' ');
 
-            if (initStateLine.size()>2)
-            {
+            if (initStateLine.size()>2) {
+
                 QString firstElement(initStateLine.at(0).data());
 
                 QString thirdElement(initStateLine.at(2).data());
 
-                if (firstElement.indexOf("HTTP/")!=-1)
-                {
+                if (firstElement.indexOf("HTTP/")!=-1) {
+
                     bool isMethodVal  = false;
                     bool isStatusNumVal = false;
 
@@ -123,66 +123,65 @@ void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
                     consumer->getCurrentHttpFrame()->setMethod("");
                     consumer->getCurrentHttpFrame()->setQueryString("");
 
-                    QString secondElement(initStateLine.at(1).data());
-                    isMethodVal=isMethod(secondElement.toLocal8Bit().data());
-                    if (isMethodVal)
-                    {
-                        consumer->getCurrentHttpFrame()->setMethod(secondElement.toStdString());
+                    isMethodVal=isMethod(initStateLine.at(1));
+
+                    if (isMethodVal) {
+
+                        consumer->getCurrentHttpFrame()->setMethod(initStateLine.at(1));
                         consumer->getCurrentHttpFrame()->setUri(initStateLine.at(2));
                     }
-                    else
-                    {
-                        isStatusNumVal=isStatusNum(secondElement.toLocal8Bit().data());
+                    else {
 
-                        if (isStatusNumVal)
-                        {
-                            consumer->getCurrentHttpFrame()->setStatusCode(atoi(secondElement.toLocal8Bit().data()));
+                        isStatusNumVal=isStatusNum(initStateLine.at(1));
+
+                        if (isStatusNumVal) {
+
+                            consumer->getCurrentHttpFrame()->setStatusCode(atoi(initStateLine.at(1).data()));
                             consumer->getCurrentHttpFrame()->setQueryString(initStateLine.at(2).data());
                         }
-                        else
-                        {
+                        else {
+
                             if (debug)
                                 cout  << "Http parse error occured. No http status number or method found." << endl;
                         }
                     }
 
-                    (*consumer->getCurrentHttpFrame()->getHeaders()).clear();
+                    consumer->getCurrentHttpFrame()->getHeaders().clear();
 
                     consumer->setHttpState(HTTP_STATE_HEADERS);
                 }
-                else if (thirdElement.indexOf("HTTP/")!=-1)
-                {
+                else if (thirdElement.indexOf("HTTP/")!=-1) {
+
                     bool isMethodVal  = false;
 
                     consumer->getCurrentHttpFrame()->setUri("");
                     consumer->getCurrentHttpFrame()->setMethod("");
 
-                    QString firstElement(initStateLine.at(0).data());
-                    isMethodVal=isMethod(firstElement.toLocal8Bit().data());
+                    isMethodVal=isMethod(initStateLine.at(0));
 
-                    if (isMethodVal)
-                    {
+                    if (isMethodVal) {
+
                         consumer->getCurrentHttpFrame()->setUri(initStateLine.at(1));
-                        consumer->getCurrentHttpFrame()->setMethod(firstElement.toStdString());
+                        consumer->getCurrentHttpFrame()->setMethod(initStateLine.at(0));
                     }
-                    else
-                    {
+                    else {
+
                        if (debug)
                             cout  << "Http parse error occured. No method found." << endl;
                     }
 
-                    (*consumer->getCurrentHttpFrame()->getHeaders()).clear();
+                    consumer->getCurrentHttpFrame()->getHeaders().clear();
 
                     consumer->setHttpState(HTTP_STATE_HEADERS);
                 }
-                else
-                {
+                else {
+
                     if (debug)
                         cout  << "Http parse error occured. No http version was specified in header." << endl;
                 }
             }
-            else
-            {
+            else {
+
                 if (debug)
                     cout  << "Http parse error occured. Http version header is undefined." << endl;
             }
@@ -198,13 +197,22 @@ void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
             {
                string currentHeader(QString(data->data()).trimmed().toStdString());
 
-               (*consumer->getCurrentHttpFrame()->getHeaders())[currentHeader.substr(0,indexOfPoint)]=QString(currentHeader.substr(indexOfPoint+1,currentHeader.length()).data()).trimmed().toStdString();
+               httpframe frame = *consumer->getCurrentHttpFrame();
+               map<string,string> headers = frame.getHeaders();
+
+               headers[currentHeader.substr(0,indexOfPoint)]=QString(currentHeader.substr(indexOfPoint+1,currentHeader.length()).data()).trimmed().toStdString();
+
+               consumer->getCurrentHttpFrame()->setHeaders(headers);
+
                 if (debug)
                     cout << currentHeader.substr(0,indexOfPoint).data() << " => " <<currentHeader.substr(indexOfPoint+1,currentHeader.length()).data() <<endl;
             }
             else
             {
-                if ((*consumer->getCurrentHttpFrame()->getHeaders()).find(HTTP_HEADERS_CONTENT_LENGTH)==(*consumer->getCurrentHttpFrame()->getHeaders()).end())
+
+                map<string,string> headers =consumer->getCurrentHttpFrame()->getHeaders();
+
+                if (headers.find(HTTP_HEADERS_CONTENT_LENGTH)==headers.end())
                 {
                     if (debug)
                         cout << "return to HTTP_INIT state" << endl;
@@ -218,7 +226,7 @@ void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
                 {
                     if (debug)
                         cout << "continue to HTTP_BODY state" << endl;
-                    consumer->setBodyLength(atoi((*consumer->getCurrentHttpFrame()->getHeaders())[HTTP_HEADERS_CONTENT_LENGTH].data()));
+                    consumer->setBodyLength(atoi(consumer->getCurrentHttpFrame()->getHeaders()[HTTP_HEADERS_CONTENT_LENGTH].data()));
                     consumer->setHttpState(HTTP_STATE_BODY);
                     consumer->setBodyProcess(true);
                 }
@@ -311,11 +319,12 @@ void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
  * @return
  *      true if data is valid REST HTTP method
  */
-bool httpparser::isMethod(char* data)
-{
-    if (strcmp(data,HTTP_METHOD_GET)==0 || strcmp(data,HTTP_METHOD_POST)==0 || strcmp(data,HTTP_METHOD_PUT)==0 || strcmp(data,HTTP_METHOD_DELETE)==0)
-    {
+bool httpparser::isMethod(std::string data) {
+
+    if (strcmp(data.data(),HTTP_METHOD_GET)==0 || strcmp(data.data(),HTTP_METHOD_POST)==0 || strcmp(data.data(),HTTP_METHOD_PUT)==0 || strcmp(data.data(),HTTP_METHOD_DELETE)==0) {
+
         return true;
+
     }
     return false;
 }
@@ -328,13 +337,14 @@ bool httpparser::isMethod(char* data)
  * @return
  *      true if data is valid HTTP status code
  */
-bool httpparser::isStatusNum(char * data)
-{
+bool httpparser::isStatusNum(std::string data) {
 
-    if (stringutils::isNum(data))
-    {
-        int code = atoi(data);
+    if (stringutils::isNum((char*)data.data())) {
+
+        int code = atoi(data.data());
+
         for(std::vector<httpconstants::statusCodeStruct>::iterator it = httpconstants::http_status_code_list.begin(); it != httpconstants::http_status_code_list.end(); ++it) {
+
             if (code==(*it).code_value)
                 return true;
         }

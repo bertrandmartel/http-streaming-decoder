@@ -22,25 +22,10 @@ using namespace std;
  * @return
  *      vector of splitted string
  */
-vector<string> stringutils::split(const string &s, char delim) {
-    vector<string> elems;
-    split(s, delim, elems);
-    return elems;
-}
+vector<string> stringutils::split(string s, char delim) {
 
-/**
- * @brief split
- *      split a string with a character delimiter
- * @param s
- *      string to split
- * @param delim
- *      character delimiter
- * @param elems
- *      the same as vector list returned
- * @return
- *      vector of splitted string
- */
-vector<string> stringutils::split(const string &s, char delim, vector<string> &elems) {
+    vector<string> elems;
+
     stringstream ss(s);
     string item;
     while (getline(ss, item, delim)) {
@@ -58,6 +43,7 @@ vector<string> stringutils::split(const string &s, char delim, vector<string> &e
  *      true if data is numeric
  */
 bool stringutils::isNum(char *s) {
+
     int i = 0,  flag;
 
     while(s[i]){

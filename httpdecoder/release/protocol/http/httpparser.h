@@ -82,7 +82,7 @@ private:
      * @return
      *      true if data is valid REST HTTP method
      */
-    bool isMethod(char * data);
+    bool isMethod(std::string data);
 
     /**
      * @brief isStatusNum
@@ -92,7 +92,7 @@ private:
      * @return
      *      true if data is valid HTTP status code
      */
-    bool isStatusNum(char * data);
+    bool isStatusNum(std::string data);
 
     /**
      * @brief debug
