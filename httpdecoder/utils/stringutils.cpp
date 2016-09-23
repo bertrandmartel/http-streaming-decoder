@@ -46,15 +46,15 @@ bool stringutils::isNum(char *s) {
 
     int i = 0,  flag;
 
-    while(s[i]){
-            //if there is a letter in a string then string is not a number
-        if(isalpha(s[i])){
+    while (s[i]) {
+        //if there is a letter in a string then string is not a number
+        if (isalpha(s[i])) {
             flag = 0;
             break;
         }
         else flag = 1;
         i++;
-        }
+    }
     if (flag == 1) return true;
     else return false;
 }

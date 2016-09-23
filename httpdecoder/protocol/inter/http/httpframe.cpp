@@ -13,11 +13,11 @@ using namespace std;
 
 httpframe::httpframe()
 {
-    statusCode=0;
-    finishedProcessing=false;
-    uri="";
-    method="";
-    body="";
+    statusCode = 0;
+    finishedProcessing = false;
+    uri = "";
+    method = "";
+    body = "";
 }
 
 /**
@@ -73,7 +73,7 @@ int httpframe::getStatusCode()
  *      retrieve http headers
  * @return
  */
-map< std::string,std::string > httpframe::getHeaders()
+map< std::string, std::string > httpframe::getHeaders()
 {
     return headers;
 }
@@ -85,7 +85,7 @@ map< std::string,std::string > httpframe::getHeaders()
  */
 void httpframe::setFinishedProcessing(bool processing)
 {
-    finishedProcessing=processing;
+    finishedProcessing = processing;
 }
 /**
  * @brief setUri
@@ -94,7 +94,7 @@ void httpframe::setFinishedProcessing(bool processing)
  */
 void httpframe::setUri(std::string uriArg)
 {
-    uri=uriArg;
+    uri = uriArg;
 }
 
 /**
@@ -104,7 +104,7 @@ void httpframe::setUri(std::string uriArg)
  */
 void httpframe::setMethod(std::string methodArg)
 {
-    method=methodArg;
+    method = methodArg;
 }
 
 /**
@@ -114,7 +114,7 @@ void httpframe::setMethod(std::string methodArg)
  */
 void httpframe::setBody(std::string bodyArg)
 {
-    body=bodyArg;
+    body = bodyArg;
 }
 
 /**
@@ -124,7 +124,7 @@ void httpframe::setBody(std::string bodyArg)
  */
 void httpframe::setQueryString(std::string querystringArg)
 {
-    querystring=querystringArg;
+    querystring = querystringArg;
 }
 
 /**
@@ -134,7 +134,7 @@ void httpframe::setQueryString(std::string querystringArg)
  */
 void httpframe::setStatusCode(int statusCodeArg)
 {
-    statusCode=statusCodeArg;
+    statusCode = statusCodeArg;
 }
 /**
  * @brief httpConsumer::getProcessState
@@ -147,6 +147,6 @@ bool httpframe::isFinishedProcessing()
     return finishedProcessing;
 }
 
-void httpframe::setHeaders(std::map<std::string,std::string> header){
-    this->headers=header;
+void httpframe::setHeaders(std::map<std::string, std::string> header) {
+    this->headers = header;
 }

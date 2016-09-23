@@ -50,69 +50,69 @@ httpdecoder::httpdecoder() {
  * @param data
  *      non-blocking or blocking data stream
  */
-void httpdecoder::httpdecode(httpconsumer * consumer,QByteArray* data) {
+void httpdecoder::httpdecode(httpconsumer * consumer, QByteArray* data) {
 
     QByteArray value = *data;
     httpparser parser;
 
-    QByteArray currentLine="";
+    QByteArray currentLine = "";
 
-    if (consumer->getBuffer().length()!=0){
+    if (consumer->getBuffer().length() != 0) {
 
-        currentLine=consumer->getBuffer();
+        currentLine = consumer->getBuffer();
     }
     currentLine.append(value);
 
-    int indexOfCarriage= currentLine.indexOf("\r\n");
+    int indexOfCarriage = currentLine.indexOf("\r\n");
 
-    if (indexOfCarriage!=-1){
+    if (indexOfCarriage != -1) {
 
-        while (indexOfCarriage!=-1) {
+        while (indexOfCarriage != -1) {
 
-            currentLine="";
+            currentLine = "";
 
             // parse header
-            if (consumer->getBuffer().length()!=0) {
+            if (consumer->getBuffer().length() != 0) {
 
-                currentLine=consumer->getBuffer();
+                currentLine = consumer->getBuffer();
                 consumer->clearBuffer();
             }
 
             currentLine.append(value);
 
-            indexOfCarriage= currentLine.indexOf("\r\n");
+            indexOfCarriage = currentLine.indexOf("\r\n");
 
-            QByteArray temp = QByteArray(QString(currentLine).toStdString().substr(0,indexOfCarriage).data());
+            QByteArray temp = QByteArray(QString(currentLine).toStdString().substr(0, indexOfCarriage).data());
 
-            parser.parseHttp(&temp,consumer);
+            parser.parseHttp(&temp, consumer);
 
-            if (currentLine.length()>(indexOfCarriage+2)){
+            if (currentLine.length() > (indexOfCarriage + 2)) {
 
-                value = QString(currentLine).toStdString().substr(indexOfCarriage+2,currentLine.length()).data();
+                value = QString(currentLine).toStdString().substr(indexOfCarriage + 2, currentLine.length()).data();
 
-                if (!consumer->getBodyProcess()){
+                if (!consumer->getBodyProcess()) {
 
-                    indexOfCarriage=value.indexOf("\r\n");
+                    indexOfCarriage = value.indexOf("\r\n");
                 }
-                else{
+                else {
 
-                    if (value.length()>=consumer->getBodyLength()){
+                    if (value.length() >= consumer->getBodyLength()) {
 
-                        indexOfCarriage=consumer->getBodyLength();
+                        indexOfCarriage = consumer->getBodyLength();
                     }
-                    else{
+                    else {
 
-                        indexOfCarriage=value.length();
+                        indexOfCarriage = value.length();
                     }
                 }
             }
-            else{
+            else {
 
-                indexOfCarriage=-1;
+                indexOfCarriage = -1;
             }
         }
     }
-    else{
+    else {
 
         // bufferize data
         consumer->appendToBuffer(&value);

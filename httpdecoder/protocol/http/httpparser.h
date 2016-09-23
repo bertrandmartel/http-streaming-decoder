@@ -55,7 +55,7 @@ public:
      * @param data
      *      streaming data
      */
-    void parseHttp(QByteArray* data,httpconsumer * consumer);
+    void parseHttp(QByteArray* data, httpconsumer * consumer);
 
     /**
      * @brief setDebug
@@ -69,7 +69,7 @@ public:
      *      retrieve http headers
      * @return
      */
-    std::map< std::string,std::string > *getHeaders();
+    std::map< std::string, std::string > *getHeaders();
 
 private:
 

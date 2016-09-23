@@ -67,27 +67,27 @@ const char * chunk4 = "Content-Length:  15\r\n\r\n";
 const char * chunk5 = "bodyTobeWritten\r\n";
 
 //[TEST OK] one-char-chunked http frame
-const string chunkedChar1="POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
-const string chunkedChar2="GET /rest/help/todo HTTP/1.1\r\nheaders3:  value3\r\nheaders4:  value4\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
-const string chunkedChar3="HTTP/1.1 200 OK\r\nheaders5:  value5\r\nheaders6:  value6\r\n\r\n";
-const string chunkedChar4="HTTP/1.1 200 OK\r\n\r\n";
-const string chunkedChar5="POST /rest/help/todo HTTP/1.1\r\nheaders7:  value7\r\nheaders8:  value8\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
+const string chunkedChar1 = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
+const string chunkedChar2 = "GET /rest/help/todo HTTP/1.1\r\nheaders3:  value3\r\nheaders4:  value4\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
+const string chunkedChar3 = "HTTP/1.1 200 OK\r\nheaders5:  value5\r\nheaders6:  value6\r\n\r\n";
+const string chunkedChar4 = "HTTP/1.1 200 OK\r\n\r\n";
+const string chunkedChar5 = "POST /rest/help/todo HTTP/1.1\r\nheaders7:  value7\r\nheaders8:  value8\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
 
 //[TEST OK] multiple complete http frames input
 const char * multipleFrame1 = "HTTP/1.1 200 OK\r\nheaders5:  value5\r\nheaders6:  value6\r\n\r\nHTTP/1.1 200 OK\r\n\r\n";
 const char * multipleFrame2 = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";
 
 //[TEST OK] multiple http frames input with error in between frames
-const char * multipleFrameWithError1="bodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\nPOST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
-const char * multipleFrameWithError2="HTTP/1.1 200 OK\r\n\r\nqsdqsfefneifniznginzieg+1+2+121422°KEF0KEffpskdpfkHr\nPOST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
-const char * multipleFrameWithError3="HTTP/1.1 200 OK\r\n\r\nqsdqsfefneifniznginzieg+1+2+1214\r\n\r\n22°KEF0KEffpskdpfkHr\r\n\r\n\r\n\r\nPOST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
+const char * multipleFrameWithError1 = "bodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\nPOST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
+const char * multipleFrameWithError2 = "HTTP/1.1 200 OK\r\n\r\nqsdqsfefneifniznginzieg+1+2+121422°KEF0KEffpskdpfkHr\nPOST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
+const char * multipleFrameWithError3 = "HTTP/1.1 200 OK\r\n\r\nqsdqsfefneifniznginzieg+1+2+1214\r\n\r\n22°KEF0KEffpskdpfkHr\r\n\r\n\r\n\r\nPOST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n";
 
 /**
  * Test cases for http decoder
  *
  * @param args
  */
-int main(int argc, char *argv[]) {
+int main() {
 
     httpdecoder decoder; //must be called only once (TODO: memory leak on multiple call)
     httpconsumer *consumer = new httpconsumer;
@@ -95,16 +95,16 @@ int main(int argc, char *argv[]) {
     //debug your consumer here
     //consumer->setDebug(true);
 
-    launcher::testStandaloneHttpFrames(consumer,decoder);
-    launcher::testStandaloneHttpSeparatedByCRLF(consumer,decoder);
-    launcher::testOnCharChunkedHttpFrame(consumer,decoder);
-    launcher::testMultipleFrames(consumer,decoder);
-    launcher::testMultipleFramesWithError(consumer,decoder);
+    launcher::testStandaloneHttpFrames(consumer, decoder);
+    launcher::testStandaloneHttpSeparatedByCRLF(consumer, decoder);
+    launcher::testOnCharChunkedHttpFrame(consumer, decoder);
+    launcher::testMultipleFrames(consumer, decoder);
+    launcher::testMultipleFramesWithError(consumer, decoder);
 
     launcher::displayInfo(consumer);
 
     delete consumer;
-    consumer=0;
+    consumer = 0;
 
     return 0;
 }
@@ -113,52 +113,52 @@ int main(int argc, char *argv[]) {
  * @brief launcher::testStandaloneHttpFrames
  *      Test for one standalone http frame
  */
-void launcher::testStandaloneHttpFrames(httpconsumer * consumer,httpdecoder decoder) {
+void launcher::testStandaloneHttpFrames(httpconsumer * consumer, httpdecoder decoder) {
 
-    QByteArray *httpFrame=0;
+    QByteArray *httpFrame = 0;
 
     //[TEST OK] one standalone http frame
     cout << "####################################" << endl;
     cout << "HTTP request POST test " << endl;
 
     httpFrame = new QByteArray(data1);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     cout << "####################################" << endl;
     cout << "HTTP request GET test " << endl;
 
 
     httpFrame = new QByteArray(data2);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     cout << "####################################" << endl;
     cout << "HTTP response with body test " << endl;
 
 
     httpFrame = new QByteArray(data3);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     cout << "####################################" << endl;
     cout << "HTTP response without body test " << endl;
 
     httpFrame = new QByteArray(data4);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     cout << "####################################" << endl;
     cout << "HTTP request POST test " << endl;
 
     httpFrame = new QByteArray(data5);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     //launcher::displayInfo(consumer);
 
@@ -169,36 +169,36 @@ void launcher::testStandaloneHttpFrames(httpconsumer * consumer,httpdecoder deco
  * @brief launcher::testStandaloneHttpSeparatedByCRLF
  *      Test for one standalone HTTP frame separated with CRLF (one line at the time)
  */
-void launcher::testStandaloneHttpSeparatedByCRLF(httpconsumer * consumer,httpdecoder decoder) {
+void launcher::testStandaloneHttpSeparatedByCRLF(httpconsumer * consumer, httpdecoder decoder) {
 
     QByteArray *httpFrame;
 
     //[TEST OK] one standalone http frame chunked according to carriage return
 
     httpFrame = new QByteArray(chunk1);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     httpFrame = new QByteArray(chunk2);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     httpFrame = new QByteArray(chunk3);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     httpFrame = new QByteArray(chunk4);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     httpFrame = new QByteArray(chunk5);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     //launcher::displayInfo(consumer);
     cout << "####################################" << endl;
@@ -208,19 +208,19 @@ void launcher::testStandaloneHttpSeparatedByCRLF(httpconsumer * consumer,httpdec
  * @brief launcher::testOnCharChunkedHttpFrame
  *          test for one char at the time
  */
-void launcher::testOnCharChunkedHttpFrame(httpconsumer * consumer,httpdecoder decoder) {
+void launcher::testOnCharChunkedHttpFrame(httpconsumer * consumer, httpdecoder decoder) {
 
     QByteArray *httpFrame;
 
     //[TEST OK] one-char-chunked http frame
 
-    for (int i = 0; i<chunkedChar2.length() ;i++) {
+    for (unsigned int i = 0; i < chunkedChar2.length() ; i++) {
 
         httpFrame = new QByteArray();
         httpFrame->append(chunkedChar2[i]);
-        decoder.httpdecode(consumer,httpFrame);
+        decoder.httpdecode(consumer, httpFrame);
         delete httpFrame;
-        httpFrame=0;
+        httpFrame = 0;
 
     }
     //launcher::displayInfo(consumer);
@@ -230,16 +230,16 @@ void launcher::testOnCharChunkedHttpFrame(httpconsumer * consumer,httpdecoder de
  * @brief launcher::testMultipleFrames
  *      test of multiple http frame on the row
  */
-void launcher::testMultipleFrames(httpconsumer * consumer,httpdecoder decoder) {
+void launcher::testMultipleFrames(httpconsumer * consumer, httpdecoder decoder) {
 
     QByteArray *httpFrame;
 
     //[TEST OK] multiple complete http frames input
 
     httpFrame = new QByteArray(multipleFrame2);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     //launcher::displayInfo(consumer);
 }
@@ -248,16 +248,16 @@ void launcher::testMultipleFrames(httpconsumer * consumer,httpdecoder decoder) {
  * @brief launcher::testMultipleFramesWithError
  *      test for error encapsulated in mutliple frames
  */
-void launcher::testMultipleFramesWithError(httpconsumer * consumer,httpdecoder decoder) {
+void launcher::testMultipleFramesWithError(httpconsumer * consumer, httpdecoder decoder) {
 
     QByteArray *httpFrame;
 
     //[TEST OK] multiple http frames input with error in between frames
 
     httpFrame = new QByteArray(multipleFrameWithError3);
-    decoder.httpdecode(consumer,httpFrame);
+    decoder.httpdecode(consumer, httpFrame);
     delete httpFrame;
-    httpFrame=0;
+    httpFrame = 0;
 
     //launcher::displayInfo(consumer);
 }
@@ -274,7 +274,7 @@ void launcher::displayInfo(httpconsumer* consumer) {
     cout << "####################################" << endl;
 
 
-    for (int i = 0 ;i  < consumer->getHttpFrameList().size();i++) {
+    for (unsigned int i = 0 ; i  < consumer->getHttpFrameList().size(); i++) {
 
         if (consumer->getHttpFrameList().at(i).isFinishedProcessing()) {
 
@@ -289,15 +289,15 @@ void launcher::displayInfo(httpconsumer* consumer) {
             cout << "status code : " << consumer->getHttpFrameList().at(i).getStatusCode()  << endl;
             cout << "headers : " << endl;
 
-            if (consumer->getHttpFrameList().at(i).getHeaders().size()>0){
+            if (consumer->getHttpFrameList().at(i).getHeaders().size() > 0) {
 
-               typedef std::map<std::string,std::string>::iterator it_type;
+                typedef std::map<std::string, std::string>::iterator it_type;
 
-               map<string,string> headers = consumer->getHttpFrameList().at(i).getHeaders();
+                map<string, string> headers = consumer->getHttpFrameList().at(i).getHeaders();
 
-               for (it_type it=headers.begin(); it!=headers.end(); ++it){
+                for (it_type it = headers.begin(); it != headers.end(); ++it) {
                     cout << "\t\t" << it->first << " => " << it->second << '\n';
-               }
+                }
 
             }
             cout << "####################################" << endl;

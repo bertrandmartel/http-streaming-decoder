@@ -22,13 +22,13 @@ using namespace std;
 httpconsumer::httpconsumer()
 {
     QByteArray bufferVal("");
-    this->buffer=bufferVal;
+    this->buffer = bufferVal;
     httpState = HTTP_STATE_INIT;
-    bodyProcess=false;
-    bodyLength=0;
-    bodyIndex=0;
-    finishedProcessing=false;
-    debug=false;
+    bodyProcess = false;
+    bodyLength = 0;
+    bodyIndex = 0;
+    finishedProcessing = false;
+    debug = false;
 }
 
 /**
@@ -89,7 +89,7 @@ QByteArray httpconsumer::getBuffer()
  */
 void httpconsumer::setFinishedProcessing(bool processing)
 {
-    finishedProcessing=processing;
+    finishedProcessing = processing;
 }
 
 /**
@@ -99,7 +99,7 @@ void httpconsumer::setFinishedProcessing(bool processing)
  */
 void httpconsumer::setDebug(bool debugArg)
 {
-    debug=debugArg;
+    debug = debugArg;
 }
 
 /**
@@ -118,7 +118,7 @@ int httpconsumer::getBodyIndex()
  */
 void httpconsumer::setBodyIndex(int bodyIndexArg)
 {
-    bodyIndex=bodyIndexArg;
+    bodyIndex = bodyIndexArg;
 }
 
 /**
@@ -137,7 +137,7 @@ bool httpconsumer::getBodyProcess()
  */
 void httpconsumer::setBodyProcess(bool processArg)
 {
-    bodyProcess=processArg;
+    bodyProcess = processArg;
 }
 
 /**
@@ -156,7 +156,7 @@ int  httpconsumer::getBodyLength()
  */
 void httpconsumer::setBodyLength(int length)
 {
-    bodyLength=length;
+    bodyLength = length;
 }
 
 /**
@@ -175,7 +175,7 @@ int  httpconsumer::getHttpState()
  */
 void httpconsumer::setHttpState(int http_state)
 {
-    httpState=http_state;
+    httpState = http_state;
 }
 
 /**
@@ -210,7 +210,7 @@ void httpconsumer::addNewHttpFrame(httpframe frame)
 
 void httpconsumer::setHttpFrameList(std::vector<httpframe> list)
 {
-    httpFrameList=list;
+    httpFrameList = list;
 }
 
 /**
@@ -220,8 +220,8 @@ void httpconsumer::setHttpFrameList(std::vector<httpframe> list)
  */
 httpframe *httpconsumer::getCurrentHttpFrame()
 {
-    if (httpFrameList.size()>0)
-        return &httpFrameList.at(httpFrameList.size()-1);
+    if (httpFrameList.size() > 0)
+        return &httpFrameList.at(httpFrameList.size() - 1);
     else
         return 0;
 }

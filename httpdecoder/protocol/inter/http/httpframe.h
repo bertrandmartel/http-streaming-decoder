@@ -38,35 +38,35 @@ public:
      *      retrieve HTTP uri
      * @return
      */
-     std::string getUri();
+    std::string getUri();
 
     /**
      * @brief setUri
      *      set http uri value
      * @param uri
      */
-     void setUri(std::string uri);
+    void setUri(std::string uri);
 
     /**
      * @brief getMethod
      *      retrieve HTTP method
      * @return
      */
-     std::string getMethod();
+    std::string getMethod();
 
     /**
      * @brief setMethod
      *      set http method
      * @param method
      */
-     void setMethod(std::string method);
+    void setMethod(std::string method);
 
     /**
      * @brief getBodyLength
      *      retrieve length of body
      * @return
      */
-     std::string getBody();
+    std::string getBody();
 
     /**
      * @brief setBody
@@ -80,35 +80,35 @@ public:
      *      retrieve query string value
      * @return
      */
-     std::string getQueryString();
+    std::string getQueryString();
 
     /**
      * @brief setQueryString
      *          set http query string value
      * @param querystring
      */
-     void setQueryString(std::string querystring);
+    void setQueryString(std::string querystring);
 
     /**
      * @brief getStatusCode
      *      retrieve status code
      * @return
      */
-     int getStatusCode();
+    int getStatusCode();
 
     /**
      * @brief setStatusCode
      *      set status code value
      * @param statusCode
      */
-     void setStatusCode(int statusCode);
+    void setStatusCode(int statusCode);
 
     /**
      * @brief getHeaders
      *      retrieve http headers
      * @return
      */
-     std::map< std::string,std::string > getHeaders();
+    std::map< std::string, std::string > getHeaders();
 
     /**
      * @brief httpConsumer::getProcessState
@@ -116,21 +116,21 @@ public:
      * @return
      *
      */
-     bool isFinishedProcessing();
+    bool isFinishedProcessing();
 
     /**
      * @brief setFinishedProcessing
      *      set processing frame state
      * @param processing
      */
-     void setFinishedProcessing(bool processing);
+    void setFinishedProcessing(bool processing);
 
-     /**
-      * @brief setHeaders
-      *     set http headers
-      * @param header
-      */
-     void setHeaders(std::map<std::string,std::string> header);
+    /**
+     * @brief setHeaders
+     *     set http headers
+     * @param header
+     */
+    void setHeaders(std::map<std::string, std::string> header);
 
 private :
 
@@ -170,7 +170,7 @@ private :
      * @brief headers
      *      HTTP headers
      */
-    std::map<std::string,std::string> headers;
+    std::map<std::string, std::string> headers;
 
     /**
      * @brief processFrame

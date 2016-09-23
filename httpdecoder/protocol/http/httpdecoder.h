@@ -56,7 +56,7 @@ public :
      * @param data
      *      non-blocking or blocking data stream
      */
-    void httpdecode(httpconsumer * consumer,QByteArray* data);
+    void httpdecode(httpconsumer * consumer, QByteArray* data);
 
 };
 

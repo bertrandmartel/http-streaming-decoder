@@ -53,7 +53,7 @@ std::vector<httpconstants::statusCodeStruct> httpconstants::http_status_code_lis
  */
 httpparser::httpparser()
 {
-    debug=false;
+    debug = false;
 }
 
 /**
@@ -63,7 +63,7 @@ httpparser::httpparser()
  */
 void httpparser::setDebug(bool debugArg)
 {
-    debug=debugArg;
+    debug = debugArg;
 }
 
 /**
@@ -73,183 +73,199 @@ void httpparser::setDebug(bool debugArg)
  * @param data
  *      streaming data
  */
-void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
+void httpparser::parseHttp(QByteArray* data, httpconsumer *consumer)
 {
     if (debug)
         cout << "http state init : " << consumer->getHttpState() << endl;
 
     switch (consumer->getHttpState())
     {
-        case HTTP_STATE_INIT:
-        {
-            httpframe frame;
+    case HTTP_STATE_INIT:
+    {
+        httpframe frame;
 
-            consumer->addNewHttpFrame(frame);
-            consumer->setBodyProcess(false);
+        consumer->addNewHttpFrame(frame);
+        consumer->setBodyProcess(false);
 
-            consumer->getCurrentHttpFrame()->setBody("");
+        consumer->getCurrentHttpFrame()->setBody("");
 
-            consumer->getCurrentHttpFrame()->getHeaders().clear();
+        consumer->getCurrentHttpFrame()->getHeaders().clear();
 
-            consumer->setBodyLength(0);
-            consumer->setBodyIndex(0);
-            consumer->getCurrentHttpFrame()->setFinishedProcessing(false);
-            consumer->setFinishedProcessing(false);
+        consumer->setBodyLength(0);
+        consumer->setBodyIndex(0);
+        consumer->getCurrentHttpFrame()->setFinishedProcessing(false);
+        consumer->setFinishedProcessing(false);
 
-            if (debug)
-                cout << "HTTP STATE INIT" << endl;
-        }
-        case HTTP_STATE_VERSION:
-        {
-            if (debug)
-                cout << "HTTP STATE VERSION" << endl;
+        if (debug)
+            cout << "HTTP STATE INIT" << endl;
+    }
+    case HTTP_STATE_VERSION:
+    {
+        if (debug)
+            cout << "HTTP STATE VERSION" << endl;
 
-            std::vector<std::string>  initStateLine =  stringutils::split(QString(data->data()).toStdString(), ' ');
+        std::vector<std::string>  initStateLine =  stringutils::split(QString(data->data()).toStdString(), ' ');
 
-            if (initStateLine.size()>2) {
+        if (initStateLine.size() > 2) {
 
-                QString firstElement(initStateLine.at(0).data());
+            QString firstElement(initStateLine.at(0).data());
 
-                QString thirdElement(initStateLine.at(2).data());
+            QString thirdElement(initStateLine.at(2).data());
 
-                if (firstElement.indexOf("HTTP/")!=-1) {
+            if (firstElement.indexOf("HTTP/") != -1) {
 
-                    bool isMethodVal  = false;
-                    bool isStatusNumVal = false;
+                bool isMethodVal  = false;
+                bool isStatusNumVal = false;
 
-                    consumer->getCurrentHttpFrame()->setMethod("");
-                    consumer->getCurrentHttpFrame()->setStatusCode(0);
-                    consumer->getCurrentHttpFrame()->setUri("");
-                    consumer->getCurrentHttpFrame()->setMethod("");
-                    consumer->getCurrentHttpFrame()->setQueryString("");
+                consumer->getCurrentHttpFrame()->setMethod("");
+                consumer->getCurrentHttpFrame()->setStatusCode(0);
+                consumer->getCurrentHttpFrame()->setUri("");
+                consumer->getCurrentHttpFrame()->setMethod("");
+                consumer->getCurrentHttpFrame()->setQueryString("");
 
-                    isMethodVal=isMethod(initStateLine.at(1));
+                isMethodVal = isMethod(initStateLine.at(1));
 
-                    if (isMethodVal) {
+                if (isMethodVal) {
 
-                        consumer->getCurrentHttpFrame()->setMethod(initStateLine.at(1));
-                        consumer->getCurrentHttpFrame()->setUri(initStateLine.at(2));
-                    }
-                    else {
-
-                        isStatusNumVal=isStatusNum(initStateLine.at(1));
-
-                        if (isStatusNumVal) {
-
-                            consumer->getCurrentHttpFrame()->setStatusCode(atoi(initStateLine.at(1).data()));
-                            consumer->getCurrentHttpFrame()->setQueryString(initStateLine.at(2).data());
-                        }
-                        else {
-
-                            if (debug)
-                                cout  << "Http parse error occured. No http status number or method found." << endl;
-                        }
-                    }
-
-                    consumer->getCurrentHttpFrame()->getHeaders().clear();
-
-                    consumer->setHttpState(HTTP_STATE_HEADERS);
+                    consumer->getCurrentHttpFrame()->setMethod(initStateLine.at(1));
+                    consumer->getCurrentHttpFrame()->setUri(initStateLine.at(2));
                 }
-                else if (thirdElement.indexOf("HTTP/")!=-1) {
+                else {
 
-                    bool isMethodVal  = false;
+                    isStatusNumVal = isStatusNum(initStateLine.at(1));
 
-                    consumer->getCurrentHttpFrame()->setUri("");
-                    consumer->getCurrentHttpFrame()->setMethod("");
+                    if (isStatusNumVal) {
 
-                    isMethodVal=isMethod(initStateLine.at(0));
-
-                    if (isMethodVal) {
-
-                        consumer->getCurrentHttpFrame()->setUri(initStateLine.at(1));
-                        consumer->getCurrentHttpFrame()->setMethod(initStateLine.at(0));
+                        consumer->getCurrentHttpFrame()->setStatusCode(atoi(initStateLine.at(1).data()));
+                        consumer->getCurrentHttpFrame()->setQueryString(initStateLine.at(2).data());
                     }
                     else {
 
-                       if (debug)
-                            cout  << "Http parse error occured. No method found." << endl;
+                        if (debug)
+                            cout  << "Http parse error occured. No http status number or method found." << endl;
                     }
+                }
 
-                    consumer->getCurrentHttpFrame()->getHeaders().clear();
+                consumer->getCurrentHttpFrame()->getHeaders().clear();
 
-                    consumer->setHttpState(HTTP_STATE_HEADERS);
+                consumer->setHttpState(HTTP_STATE_HEADERS);
+            }
+            else if (thirdElement.indexOf("HTTP/") != -1) {
+
+                bool isMethodVal  = false;
+
+                consumer->getCurrentHttpFrame()->setUri("");
+                consumer->getCurrentHttpFrame()->setMethod("");
+
+                isMethodVal = isMethod(initStateLine.at(0));
+
+                if (isMethodVal) {
+
+                    consumer->getCurrentHttpFrame()->setUri(initStateLine.at(1));
+                    consumer->getCurrentHttpFrame()->setMethod(initStateLine.at(0));
                 }
                 else {
 
                     if (debug)
-                        cout  << "Http parse error occured. No http version was specified in header." << endl;
+                        cout  << "Http parse error occured. No method found." << endl;
                 }
+
+                consumer->getCurrentHttpFrame()->getHeaders().clear();
+
+                consumer->setHttpState(HTTP_STATE_HEADERS);
             }
             else {
 
                 if (debug)
-                    cout  << "Http parse error occured. Http version header is undefined." << endl;
+                    cout  << "Http parse error occured. No http version was specified in header." << endl;
             }
-            break;
         }
-        case HTTP_STATE_HEADERS:
-        {
+        else {
+
             if (debug)
-                cout << "HTTP STATE HEADERS" << endl;
-
-            int indexOfPoint = data->indexOf(":");
-            if (indexOfPoint!=-1)
-            {
-               string currentHeader(QString(data->data()).trimmed().toStdString());
-
-               httpframe frame = *consumer->getCurrentHttpFrame();
-               map<string,string> headers = frame.getHeaders();
-
-               headers[currentHeader.substr(0,indexOfPoint)]=QString(currentHeader.substr(indexOfPoint+1,currentHeader.length()).data()).trimmed().toStdString();
-
-               consumer->getCurrentHttpFrame()->setHeaders(headers);
-
-                if (debug)
-                    cout << currentHeader.substr(0,indexOfPoint).data() << " => " <<currentHeader.substr(indexOfPoint+1,currentHeader.length()).data() <<endl;
-            }
-            else
-            {
-
-                map<string,string> headers =consumer->getCurrentHttpFrame()->getHeaders();
-
-                if (headers.find(HTTP_HEADERS_CONTENT_LENGTH)==headers.end())
-                {
-                    if (debug)
-                        cout << "return to HTTP_INIT state" << endl;
-                    consumer->setBodyLength(0);
-                    consumer->getCurrentHttpFrame()->setFinishedProcessing(true);
-                    consumer->setFinishedProcessing(true);
-
-                    consumer->setHttpState(HTTP_STATE_INIT);
-                }
-                else
-                {
-                    if (debug)
-                        cout << "continue to HTTP_BODY state" << endl;
-                    consumer->setBodyLength(atoi(consumer->getCurrentHttpFrame()->getHeaders()[HTTP_HEADERS_CONTENT_LENGTH].data()));
-                    consumer->setHttpState(HTTP_STATE_BODY);
-                    consumer->setBodyProcess(true);
-                }
-            }
-            break;
+                cout  << "Http parse error occured. Http version header is undefined." << endl;
         }
-        case HTTP_STATE_BODY:
+        break;
+    }
+    case HTTP_STATE_HEADERS:
+    {
+        if (debug)
+            cout << "HTTP STATE HEADERS" << endl;
+
+        int indexOfPoint = data->indexOf(":");
+        if (indexOfPoint != -1)
         {
+            string currentHeader(QString(data->data()).trimmed().toStdString());
+
+            httpframe frame = *consumer->getCurrentHttpFrame();
+            map<string, string> headers = frame.getHeaders();
+
+            headers[currentHeader.substr(0, indexOfPoint)] = QString(currentHeader.substr(indexOfPoint + 1, currentHeader.length()).data()).trimmed().toStdString();
+
+            consumer->getCurrentHttpFrame()->setHeaders(headers);
+
             if (debug)
-                cout << "HTTP STATE BODY" << endl;
-            if (consumer->getBodyLength()==0)
+                cout << currentHeader.substr(0, indexOfPoint).data() << " => " << currentHeader.substr(indexOfPoint + 1, currentHeader.length()).data() << endl;
+        }
+        else
+        {
+
+            map<string, string> headers = consumer->getCurrentHttpFrame()->getHeaders();
+
+            if (headers.find(HTTP_HEADERS_CONTENT_LENGTH) == headers.end())
             {
                 if (debug)
-                    cout << "no body to read" << endl;
-                consumer->setBodyProcess(false);
+                    cout << "return to HTTP_INIT state" << endl;
                 consumer->setBodyLength(0);
                 consumer->getCurrentHttpFrame()->setFinishedProcessing(true);
                 consumer->setFinishedProcessing(true);
+
                 consumer->setHttpState(HTTP_STATE_INIT);
             }
-            else if (data->length()>=consumer->getBodyLength() && consumer->getBodyIndex()==0)
+            else
             {
-                consumer->getCurrentHttpFrame()->setBody(QString(data->data()).toStdString().substr(0,consumer->getBodyLength()));
+                if (debug)
+                    cout << "continue to HTTP_BODY state" << endl;
+                consumer->setBodyLength(atoi(consumer->getCurrentHttpFrame()->getHeaders()[HTTP_HEADERS_CONTENT_LENGTH].data()));
+                consumer->setHttpState(HTTP_STATE_BODY);
+                consumer->setBodyProcess(true);
+            }
+        }
+        break;
+    }
+    case HTTP_STATE_BODY:
+    {
+        if (debug)
+            cout << "HTTP STATE BODY" << endl;
+        if (consumer->getBodyLength() == 0)
+        {
+            if (debug)
+                cout << "no body to read" << endl;
+            consumer->setBodyProcess(false);
+            consumer->setBodyLength(0);
+            consumer->getCurrentHttpFrame()->setFinishedProcessing(true);
+            consumer->setFinishedProcessing(true);
+            consumer->setHttpState(HTTP_STATE_INIT);
+        }
+        else if (data->length() >= consumer->getBodyLength() && consumer->getBodyIndex() == 0)
+        {
+            consumer->getCurrentHttpFrame()->setBody(QString(data->data()).toStdString().substr(0, consumer->getBodyLength()));
+
+            consumer->setBodyProcess(false);
+            consumer->setBodyLength(0);
+            consumer->setBodyIndex(0);
+
+            consumer->getCurrentHttpFrame()->setFinishedProcessing(true);
+            consumer->setFinishedProcessing(true);
+            consumer->setHttpState(HTTP_STATE_INIT);
+        }
+        else
+        {
+            if (debug)
+                cout << "not all body can be read";
+            if (consumer->getBodyIndex() == 0 && data->length() >= consumer->getBodyLength())
+            {
+                consumer->getCurrentHttpFrame()->setBody(QString(data->data()).toStdString().substr(0, data->length()));
 
                 consumer->setBodyProcess(false);
                 consumer->setBodyLength(0);
@@ -261,11 +277,13 @@ void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
             }
             else
             {
-                if (debug)
-                    cout << "not all body can be read";
-                if (consumer->getBodyIndex()==0 && data->length()>=consumer->getBodyLength())
+                if (data->length() >= (consumer->getBodyLength() - consumer->getBodyIndex()))
                 {
-                    consumer->getCurrentHttpFrame()->setBody(QString(data->data()).toStdString().substr(0,data->length()));
+                    std::string bodyTemp = consumer->getCurrentHttpFrame()->getBody();
+
+                    bodyTemp += QString(data->data()).toStdString().substr(0, consumer->getBodyLength() - consumer->getBodyIndex());
+
+                    consumer->getCurrentHttpFrame()->setBody(bodyTemp);
 
                     consumer->setBodyProcess(false);
                     consumer->setBodyLength(0);
@@ -277,36 +295,18 @@ void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
                 }
                 else
                 {
-                    if (data->length()>=(consumer->getBodyLength()-consumer->getBodyIndex()))
-                    {
-                        std::string bodyTemp = consumer->getCurrentHttpFrame()->getBody();
+                    std::string bodyTemp = consumer->getCurrentHttpFrame()->getBody();
+                    bodyTemp += QString(data->data()).toStdString().substr(0, data->length());
+                    consumer->getCurrentHttpFrame()->setBody(bodyTemp);
 
-                        bodyTemp+=QString(data->data()).toStdString().substr(0,consumer->getBodyLength()-consumer->getBodyIndex());
-
-                        consumer->getCurrentHttpFrame()->setBody(bodyTemp);
-
-                        consumer->setBodyProcess(false);
-                        consumer->setBodyLength(0);
-                        consumer->setBodyIndex(0);
-
-                        consumer->getCurrentHttpFrame()->setFinishedProcessing(true);
-                        consumer->setFinishedProcessing(true);
-                        consumer->setHttpState(HTTP_STATE_INIT);
-                    }
-                    else
-                    {
-                        std::string bodyTemp = consumer->getCurrentHttpFrame()->getBody();
-                        bodyTemp+=QString(data->data()).toStdString().substr(0,data->length());
-                        consumer->getCurrentHttpFrame()->setBody(bodyTemp);
-
-                        int bodyIndexTemp = consumer->getBodyIndex();
-                        bodyIndexTemp+=data->length();
-                        consumer->setBodyIndex(bodyIndexTemp);
-                    }
+                    int bodyIndexTemp = consumer->getBodyIndex();
+                    bodyIndexTemp += data->length();
+                    consumer->setBodyIndex(bodyIndexTemp);
                 }
             }
-            break;
         }
+        break;
+    }
     }
 }
 
@@ -321,7 +321,7 @@ void httpparser::parseHttp(QByteArray* data,httpconsumer *consumer)
  */
 bool httpparser::isMethod(std::string data) {
 
-    if (strcmp(data.data(),HTTP_METHOD_GET)==0 || strcmp(data.data(),HTTP_METHOD_POST)==0 || strcmp(data.data(),HTTP_METHOD_PUT)==0 || strcmp(data.data(),HTTP_METHOD_DELETE)==0) {
+    if (strcmp(data.data(), HTTP_METHOD_GET) == 0 || strcmp(data.data(), HTTP_METHOD_POST) == 0 || strcmp(data.data(), HTTP_METHOD_PUT) == 0 || strcmp(data.data(), HTTP_METHOD_DELETE) == 0) {
 
         return true;
 
@@ -343,9 +343,9 @@ bool httpparser::isStatusNum(std::string data) {
 
         int code = atoi(data.data());
 
-        for(std::vector<httpconstants::statusCodeStruct>::iterator it = httpconstants::http_status_code_list.begin(); it != httpconstants::http_status_code_list.end(); ++it) {
+        for (std::vector<httpconstants::statusCodeStruct>::iterator it = httpconstants::http_status_code_list.begin(); it != httpconstants::http_status_code_list.end(); ++it) {
 
-            if (code==(*it).code_value)
+            if (code == (*it).code_value)
                 return true;
         }
     }

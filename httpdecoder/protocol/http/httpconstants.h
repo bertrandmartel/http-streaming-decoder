@@ -43,15 +43,15 @@ class httpconstants
 
 public:
 
-    #define HTTP_HEADERS_CONTENT_LENGTH "Content-Length"
+#define HTTP_HEADERS_CONTENT_LENGTH "Content-Length"
 
-    #define HTTP_METHOD_GET    "GET"
+#define HTTP_METHOD_GET    "GET"
 
-    #define HTTP_METHOD_POST   "POST"
+#define HTTP_METHOD_POST   "POST"
 
-    #define HTTP_METHOD_PUT    "PUT"
+#define HTTP_METHOD_PUT    "PUT"
 
-    #define HTTP_METHOD_DELETE "DELETE"
+#define HTTP_METHOD_DELETE "DELETE"
 
     // struct for status code / status code phrase
     typedef struct statusCodeStruct
@@ -59,8 +59,8 @@ public:
         int         code_value;
         std::string code_phrase;
 
-        statusCodeStruct(int code_value,std::string code_phrase) :
-                      code_value(code_value), code_phrase(code_phrase){}
+        statusCodeStruct(int code_value, std::string code_phrase) :
+            code_value(code_value), code_phrase(code_phrase) {}
     } statusCode;
 
     /**
@@ -73,7 +73,7 @@ public:
      * @brief static_init
      *      list of status code is statically stored : this must be called only once to avoid doublons (TODO : check if there is another way)
      */
-    static void static_init(){
+    static void static_init() {
         http_status_code_list.push_back(statusCodeStruct(100,  "Continue"                        ));
         http_status_code_list.push_back(statusCodeStruct(101,  "Switching Protocols"             ));
         http_status_code_list.push_back(statusCodeStruct(200,  "OK"                              ));

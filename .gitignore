@@ -2,3 +2,8 @@
 build-httpdecoder-Desktop-Release/*
 build-httpdecoder-Desktop-Debug/*
 *.o
+/Makefile
+/httpdecoder/Makefile
+/httpdecoder-test/Makefile
+/httpdecoder/release
+/httpdecoder-test/release

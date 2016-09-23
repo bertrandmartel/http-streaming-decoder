@@ -1,99 +1,123 @@
 # HTTP streaming decoder #
 
-http://akinaru.github.io/http-streaming-decoder-cpp/
+[![Build Status](https://travis-ci.org/akinaru/http-streaming-decoder.svg?branch=master)](https://travis-ci.org/akinaru/http-streaming-decoder)
+[![License](http://img.shields.io/:license-mit-blue.svg)](LICENSE.md)
 
-<i>Last update 09/10/2015</i>
+http://akinaru.github.io/http-streaming-decoder
 
-HTTP protocol decoder
+C++ HTTP streaming decoder for Qt4/Qt5
 
-* parse any HTTP data streaming
+* parse HTTP data streaming
 * non-blocking process
 * compatible with non-blocking or blocking socket architecture
-* http decoding monitoring
 
-<hr/>
+## Usage
 
-<b>Generality</b>
+First you have to declare the `httpdecoder` object
 
-This repo features source code and test project for http decoder library.
+```
+httpdecoder decoder;
+```
 
-Library is generated as a shared library (.dll or .so)
+Then instantiate a new `httpconsumer` : this object will monitor your data streaming decoding and will contain decoded frame(s)
 
-This project uses QtCore and is build with qmake utility (you can use QtCreator to build it)
+```
+httpconsumer *consumer = new httpconsumer;
+```
 
-<hr/>
+For both of them you'll need these import :
+```
+#include "protocol/http/httpdecoder.h"
+#include "protocol/inter/http/httpconsumer.h"
+```
 
-<b>Program syntax for decoding HTTP frames</b>
-
-First you have to declare the ``httpdecoder`` object
-
-``httpdecoder decoder;``
-
-Then instantiate a new ``httpconsumer`` : this object will monitor your data streaming decoding and will contain decoded frame(s)
-
-``httpconsumer *consumer = new httpconsumer;``
-
-For both of them you'll need these import : <br/>
-``#include "protocol/http/httpdecoder.h"``<br/>
-``#include "protocol/inter/http/httpconsumer.h"``<br/>
-
-
-Your data streaming will be put to a ``QByteArray *`` to be sent to http decoder :<br/>
-``QByteArray *httpframe = new QByteArray("POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n")``
+Your data streaming will be put to a `QByteArray *` to be sent to http decoder :
+```
+QByteArray *httpframe = new QByteArray("POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n")
+```
 
 Eventually decode with : 
 
-``decoder.httpdecode(consumer,httpFrame);``
+```
+decoder.httpdecode(consumer,httpFrame);
+```
 
 * Result of decoding will be in your pointer to consumer object you have just created
 
-* You can access to decoded frame with ``consumer->getHttpFrameList()`` which is a ``vector<httpconsumer*>`` you can iterate
+* You can access to decoded frame with `consumer->getHttpFrameList()` which is a `vector<httpconsumer*>` you can iterate
 
-* Then you can remove frame you have treated and re-loop to decode again with the same object if you want to
+* Then you can remove frame you have treated and re-loop to decode again with the same object
 
 * You must delete your consumer when you are done with it (socket destroyed / destructor ...)
 
-Complete exemple in ./http-decoder-test/launcher.cpp
+Complete example in ./http-decoder-test/launcher.cpp
 
-<hr/>
+## Example
 
-<b>Exemple</b>
+```
+httpdecoder decoder;
 
-``httpdecoder decoder;``
+httpconsumer *consumer = new httpconsumer;
 
-``httpconsumer *consumer = new httpconsumer;``
+QByteArray *httpframe = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";
 
-``QByteArray *httpframe = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";``
+httpframe = new QByteArray(data1);
 
-``httpframe = new QByteArray(data1);``
+decoder.httpdecode(consumer,httpframe);
+```
 
-``decoder.httpdecode(consumer,httpframe);``
+From consumer object `consumer->getHttpFrameList()` you can extract those fields : 
 
-From consumer object ``consumer->getHttpFrameList()`` you can extract those fields : 
+|  method name       | return data type                  |  description  |  example                |
+| -------------------| ----------------------------------|---------------|-------------------------|
+| `getUri()`         | `std::string`                       | http uri           |  "/api/rest"              |
+| `getMethod()`      | `std::string`                       | http method        |  "POST"                   |
+| `getBody()`        | `std::string`                       | http body          |  "{\"data\":\"OK\"}"          |
+| `getQueryString()` | `std::string`                       | http querystring   |  "Not Found"              |
+| `getStatusCode()`  | `int`                               | http status code   |  404                    |
+| `getHeaders()`     | `std::map<std::string,std::string>` | http headers       | ("Content-Length","15") |
 
-  method name      |  data         | type                              | exemple
-| ---------------  | ------------- | --------------------------------  | ----------------------
-| getUri()         | uri           | std::string                       | /api/rest              |
-| getMethod()      | method        | std::string                       | POST                   |
-| getBody()        | body          | std::string                       | {"data":"OK"}          |
-| getQueryString() | querystring   | std::string                       | Not Found              |
-| getStatusCode()  | status code   | int                               | 404                    |
-| getHeaders()     | headers       | std::map<std::string,std::string> |("Content-Length","15") |
+## Integrate in your project
 
-<hr/>
+* from a submodule
 
-<b>How to build</b>
+```
+git submodule add git://github.com/akinaru/http-streaming-decoder.git
+```
 
-This is composed of 2 projects:
-* http decoder library project
-* http decoder test 
+and in your `project.pro` :
 
-You can open .pro file of both with qtcreator and build project
+```
+TEMPLATE = subdirs
+SUBDIRS = http-streaming-decoder your-app
+your-app.depends = http-streaming-decoder
+```
 
-<hr/>
+with in `your-app.pro` :
 
-* Project is Qt4 compliant
-* You can build it with qmake
-* Development on QtCreator
-* Specification from https://www.ietf.org/rfc/rfc2616.txt
+```
+TARGET = your-app
+SOURCES = main.cpp
+INCLUDEPATH += ../http-streaming-decoder/httpdecoder/release
+LIBS += -L../http-streaming-decoder/httpdecoder/release -lhttpdecoder
+```
 
+## Build library
+
+```
+qmake
+make
+```
+
+## Projects using this library
+
+* https://github.com/akinaru/websocket-non-blocking
+
+## Compatibility
+
+* Qt4
+* Qt5
+
+## Specification
+
+* https://www.ietf.org/rfc/rfc2616.txt

@@ -37,7 +37,7 @@
 
 class launcher
 {
-    public:
+public:
 
     /**
      * @brief displayInfo
@@ -48,15 +48,15 @@ class launcher
      */
     static void displayInfo(httpconsumer* consumer);
 
-    static void testStandaloneHttpFrames(httpconsumer * consumer,httpdecoder decoder);
+    static void testStandaloneHttpFrames(httpconsumer * consumer, httpdecoder decoder);
 
-    static void testStandaloneHttpSeparatedByCRLF(httpconsumer * consumer,httpdecoder decoder);
+    static void testStandaloneHttpSeparatedByCRLF(httpconsumer * consumer, httpdecoder decoder);
 
-    static void testOnCharChunkedHttpFrame(httpconsumer * consumer,httpdecoder decoder);
+    static void testOnCharChunkedHttpFrame(httpconsumer * consumer, httpdecoder decoder);
 
-    static void testMultipleFrames(httpconsumer * consumer,httpdecoder decoder);
+    static void testMultipleFrames(httpconsumer * consumer, httpdecoder decoder);
 
-    static void testMultipleFramesWithError(httpconsumer * consumer,httpdecoder decoder);
+    static void testMultipleFramesWithError(httpconsumer * consumer, httpdecoder decoder);
 
 };
 
