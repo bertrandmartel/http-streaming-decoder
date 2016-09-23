@@ -1,11 +1,11 @@
-# HTTP streaming decoder #
+# HTTP streaming decoder library#
 
 [![Build Status](https://travis-ci.org/akinaru/http-streaming-decoder.svg?branch=master)](https://travis-ci.org/akinaru/http-streaming-decoder)
 [![License](http://img.shields.io/:license-mit-blue.svg)](LICENSE.md)
 
 http://akinaru.github.io/http-streaming-decoder
 
-C++ HTTP streaming decoder for Qt4/Qt5
+C++ HTTP streaming decoder library for Qt4/Qt5
 
 * parse HTTP data streaming
 * non-blocking process
@@ -13,57 +13,30 @@ C++ HTTP streaming decoder for Qt4/Qt5
 
 ## Usage
 
-First you have to declare the `httpdecoder` object
+Instanciate `httpdecoder` & `httpconsumer` objects :
 
-```
-httpdecoder decoder;
-```
-
-Then instantiate a new `httpconsumer` : this object will monitor your data streaming decoding and will contain decoded frame(s)
-
-```
-httpconsumer *consumer = new httpconsumer;
-```
-
-For both of them you'll need these import :
 ```
 #include "protocol/http/httpdecoder.h"
 #include "protocol/inter/http/httpconsumer.h"
-```
 
-Your data streaming will be put to a `QByteArray *` to be sent to http decoder :
-```
-QByteArray *httpframe = new QByteArray("POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n")
-```
+....
 
-Eventually decode with : 
-
-```
-decoder.httpdecode(consumer,httpFrame);
-```
-
-* Result of decoding will be in your pointer to consumer object you have just created
-
-* You can access to decoded frame with `consumer->getHttpFrameList()` which is a `vector<httpconsumer*>` you can iterate
-
-* Then you can remove frame you have treated and re-loop to decode again with the same object
-
-* You must delete your consumer when you are done with it (socket destroyed / destructor ...)
-
-Complete example in [httpdecoder-test/launcher.cpp](httpdecoder-test/launcher.cpp)
-
-## Example
-
-```
 httpdecoder decoder;
-
 httpconsumer *consumer = new httpconsumer;
+```
 
-QByteArray *httpframe = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";
+* `httpconsumer` will monitor your data streaming decoding and will contain decoded frame(s)
 
-httpframe = new QByteArray(data1);
+Decode a `QByteArray*` http stream :
 
-decoder.httpdecode(consumer,httpframe);
+```
+QByteArray *httpframe = new QByteArray("POST /rest/help/todo HTTP/1.1\r\n"
+                                       "headers1:  value1\r\n"
+                                       "headers2:  value2\r\n"
+                                       "Content-Length:  15\r\n\r\n"
+                                       "bodyTobeWritten\r\n");
+
+decoder.httpdecode(consumer, httpFrame);
 ```
 
 From consumer object `consumer->getHttpFrameList()` you can extract those fields : 
@@ -77,9 +50,29 @@ From consumer object `consumer->getHttpFrameList()` you can extract those fields
 | `getStatusCode()`  | `int`                               | http status code   |  404                    |
 | `getHeaders()`     | `std::map<std::string,std::string>` | http headers       | ("Content-Length","15") |
 
+* Note : You must delete your consumer when you are done with it (socket destroyed / destructor ...)
+
+Complete example in [httpdecoder-test/launcher.cpp](httpdecoder-test/launcher.cpp)
+
+## Example
+
+```
+httpdecoder decoder;
+
+httpconsumer *consumer = new httpconsumer;
+
+QByteArray *httpframe = new QByteArray("POST /rest/help/todo HTTP/1.1\r\n"
+                                       "headers1:  value1\r\n"
+                                       "headers2:  value2\r\n"
+                                       "Content-Length:  15\r\n\r\n"
+                                       "bodyTobeWritten\r\n");
+
+decoder.httpdecode(consumer, httpframe);
+```
+
 ## Integrate in your project
 
-* from a submodule
+* from git submodule
 
 ```
 git submodule add git://github.com/akinaru/http-streaming-decoder.git
