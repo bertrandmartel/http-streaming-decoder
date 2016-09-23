@@ -13,83 +13,79 @@
     <section class="page-header">
       <h1 class="project-name">http-streaming-decoder-cpp</h1>
       <h2 class="project-tagline">HTTP streaming decoder in C++</h2>
-      <a href="https://github.com/akinaru/http-streaming-decoder-cpp" class="btn">View on GitHub</a>
-      <a href="https://github.com/akinaru/http-streaming-decoder-cpp/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/akinaru/http-streaming-decoder-cpp/tarball/master" class="btn">Download .tar.gz</a>
+      <a href="https://github.com/akinaru/http-streaming-decoder" class="btn">View on GitHub</a>
+      <a href="https://github.com/akinaru/http-streaming-decoder/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/akinaru/http-streaming-decoder/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
       <h1>
-<a id="http-streaming-decoder" class="anchor" href="#http-streaming-decoder" aria-hidden="true"><span class="octicon octicon-link"></span></a>HTTP streaming decoder</h1>
+<a id="http-streaming-decoder" class="anchor" href="#http-streaming-decoder" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>HTTP streaming decoder</h1>
 
-<p><a href="http://akinaru.github.io/http-streaming-decoder-cpp/">http://akinaru.github.io/http-streaming-decoder-cpp/</a></p>
+<p><a href="https://travis-ci.org/akinaru/http-streaming-decoder"><img src="https://travis-ci.org/akinaru/http-streaming-decoder.svg?branch=master" alt="Build Status"></a>
+<a href="LICENSE.md"><img src="http://img.shields.io/:license-mit-blue.svg" alt="License"></a></p>
 
-<p><i>Last update 09/10/2015</i></p>
+<p><a href="http://akinaru.github.io/http-streaming-decoder">http://akinaru.github.io/http-streaming-decoder</a></p>
 
-<p>HTTP protocol decoder</p>
+<p>C++ HTTP streaming decoder for Qt4/Qt5</p>
 
 <ul>
-<li>parse any HTTP data streaming</li>
+<li>parse HTTP data streaming</li>
 <li>non-blocking process</li>
 <li>compatible with non-blocking or blocking socket architecture</li>
-<li>http decoding monitoring</li>
 </ul>
 
-<hr>
-
-<p><b>Generality</b></p>
-
-<p>This repo features source code and test project for http decoder library.</p>
-
-<p>Library is generated as a shared library (.dll or .so)</p>
-
-<p>This project uses QtCore and is build with qmake utility (you can use QtCreator to build it)</p>
-
-<hr>
-
-<p><b>Program syntax for decoding HTTP frames</b></p>
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
 <p>First you have to declare the <code>httpdecoder</code> object</p>
 
-<p><code>httpdecoder decoder;</code></p>
+<pre><code>httpdecoder decoder;
+</code></pre>
 
 <p>Then instantiate a new <code>httpconsumer</code> : this object will monitor your data streaming decoding and will contain decoded frame(s)</p>
 
-<p><code>httpconsumer *consumer = new httpconsumer;</code></p>
+<pre><code>httpconsumer *consumer = new httpconsumer;
+</code></pre>
 
-<p>For both of them you'll need these import : <br>
-<code>#include "protocol/http/httpdecoder.h"</code><br>
-<code>#include "protocol/inter/http/httpconsumer.h"</code><br></p>
+<p>For both of them you'll need these import :</p>
 
-<p>Your data streaming will be put to a <code>QByteArray *</code> to be sent to http decoder :<br>
-<code>QByteArray *httpframe = new QByteArray("POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n")</code></p>
+<pre><code>#include "protocol/http/httpdecoder.h"
+#include "protocol/inter/http/httpconsumer.h"
+</code></pre>
+
+<p>Your data streaming will be put to a <code>QByteArray *</code> to be sent to http decoder :</p>
+
+<pre><code>QByteArray *httpframe = new QByteArray("POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\n")
+</code></pre>
 
 <p>Eventually decode with : </p>
 
-<p><code>decoder.httpdecode(consumer,httpFrame);</code></p>
+<pre><code>decoder.httpdecode(consumer,httpFrame);
+</code></pre>
 
 <ul>
 <li><p>Result of decoding will be in your pointer to consumer object you have just created</p></li>
 <li><p>You can access to decoded frame with <code>consumer-&gt;getHttpFrameList()</code> which is a <code>vector&lt;httpconsumer*&gt;</code> you can iterate</p></li>
-<li><p>Then you can remove frame you have treated and re-loop to decode again with the same object if you want to</p></li>
+<li><p>Then you can remove frame you have treated and re-loop to decode again with the same object</p></li>
 <li><p>You must delete your consumer when you are done with it (socket destroyed / destructor ...)</p></li>
 </ul>
 
-<p>Complete exemple in ./http-decoder-test/launcher.cpp</p>
+<p>Complete example in <a href="httpdecoder-test/launcher.cpp">httpdecoder-test/launcher.cpp</a></p>
 
-<hr>
+<h2>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h2>
 
-<p><b>Exemple</b></p>
+<pre><code>httpdecoder decoder;
 
-<p><code>httpdecoder decoder;</code></p>
+httpconsumer *consumer = new httpconsumer;
 
-<p><code>httpconsumer *consumer = new httpconsumer;</code></p>
+QByteArray *httpframe = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";
 
-<p><code>QByteArray *httpframe = "POST /rest/help/todo HTTP/1.1\r\nheaders1:  value1\r\nheaders2:  value2\r\nContent-Length:  15\r\n\r\nbodyTobeWritten\r\nHTTP/1.1 200 OK\r\n\r\n";</code></p>
+httpframe = new QByteArray(data1);
 
-<p><code>httpframe = new QByteArray(data1);</code></p>
-
-<p><code>decoder.httpdecode(consumer,httpframe);</code></p>
+decoder.httpdecode(consumer,httpframe);
+</code></pre>
 
 <p>From consumer object <code>consumer-&gt;getHttpFrameList()</code> you can extract those fields : </p>
 
@@ -97,76 +93,107 @@
 <thead>
 <tr>
 <th>method name</th>
-<th>data</th>
-<th>type</th>
-<th>exemple</th>
+<th>return data type</th>
+<th>description</th>
+<th>example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>getUri()</td>
-<td>uri</td>
-<td>std::string</td>
-<td>/api/rest</td>
+<td><code>getUri()</code></td>
+<td><code>std::string</code></td>
+<td>http uri</td>
+<td>"/api/rest"</td>
 </tr>
 <tr>
-<td>getMethod()</td>
-<td>method</td>
-<td>std::string</td>
-<td>POST</td>
+<td><code>getMethod()</code></td>
+<td><code>std::string</code></td>
+<td>http method</td>
+<td>"POST"</td>
 </tr>
 <tr>
-<td>getBody()</td>
-<td>body</td>
-<td>std::string</td>
-<td>{"data":"OK"}</td>
+<td><code>getBody()</code></td>
+<td><code>std::string</code></td>
+<td>http body</td>
+<td>"{\"data\":\"OK\"}"</td>
 </tr>
 <tr>
-<td>getQueryString()</td>
-<td>querystring</td>
-<td>std::string</td>
-<td>Not Found</td>
+<td><code>getQueryString()</code></td>
+<td><code>std::string</code></td>
+<td>http querystring</td>
+<td>"Not Found"</td>
 </tr>
 <tr>
-<td>getStatusCode()</td>
-<td>status code</td>
-<td>int</td>
+<td><code>getStatusCode()</code></td>
+<td><code>int</code></td>
+<td>http status code</td>
 <td>404</td>
 </tr>
 <tr>
-<td>getHeaders()</td>
-<td>headers</td>
-<td>std::mapstd::string,std::string</td>
+<td><code>getHeaders()</code></td>
+<td><code>std::map&lt;std::string,std::string&gt;</code></td>
+<td>http headers</td>
 <td>("Content-Length","15")</td>
 </tr>
 </tbody>
 </table>
 
-<hr>
-
-<p><b>How to build</b></p>
-
-<p>This is composed of 2 projects:</p>
+<h2>
+<a id="integrate-in-your-project" class="anchor" href="#integrate-in-your-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Integrate in your project</h2>
 
 <ul>
-<li>http decoder library project</li>
-<li>http decoder test </li>
+<li>from a submodule</li>
 </ul>
 
-<p>You can open .pro file of both with qtcreator and build project</p>
+<pre><code>git submodule add git://github.com/akinaru/http-streaming-decoder.git
+</code></pre>
 
-<hr>
+<p>and in your <code>project.pro</code> :</p>
+
+<pre><code>TEMPLATE = subdirs
+SUBDIRS = http-streaming-decoder your-app
+your-app.depends = http-streaming-decoder
+</code></pre>
+
+<p>with in <code>your-app.pro</code> :</p>
+
+<pre><code>TARGET = your-app
+SOURCES = main.cpp
+INCLUDEPATH += ../http-streaming-decoder/httpdecoder/release
+LIBS += -L../http-streaming-decoder/httpdecoder/release -lhttpdecoder
+</code></pre>
+
+<h2>
+<a id="build-library" class="anchor" href="#build-library" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build library</h2>
+
+<pre><code>qmake
+make
+</code></pre>
+
+<h2>
+<a id="projects-using-this-library" class="anchor" href="#projects-using-this-library" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Projects using this library</h2>
 
 <ul>
-<li>Project is Qt4 compliant</li>
-<li>You can build it with qmake</li>
-<li>Development on QtCreator</li>
-<li>Specification from <a href="https://www.ietf.org/rfc/rfc2616.txt">https://www.ietf.org/rfc/rfc2616.txt</a>
-</li>
+<li><a href="https://github.com/akinaru/websocket-non-blocking">https://github.com/akinaru/websocket-non-blocking</a></li>
+</ul>
+
+<h2>
+<a id="compatibility" class="anchor" href="#compatibility" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compatibility</h2>
+
+<ul>
+<li>Qt4</li>
+<li>Qt5</li>
+</ul>
+
+<h2>
+<a id="specification" class="anchor" href="#specification" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Specification</h2>
+
+<ul>
+<li><a href="https://www.ietf.org/rfc/rfc2616.txt">https://www.ietf.org/rfc/rfc2616.txt</a></li>
 </ul>
 
       <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/akinaru/http-streaming-decoder-cpp">http-streaming-decoder-cpp</a> is maintained by <a href="https://github.com/akinaru">akinaru</a>.</span>
+        <span class="site-footer-owner"><a href="https://github.com/akinaru/http-streaming-decoder">http-streaming-decoder-cpp</a> is maintained by <a href="https://github.com/akinaru">akinaru</a>.</span>
 
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
