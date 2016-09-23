@@ -50,7 +50,7 @@ decoder.httpdecode(consumer,httpFrame);
 
 * You must delete your consumer when you are done with it (socket destroyed / destructor ...)
 
-Complete example in ./http-decoder-test/launcher.cpp
+Complete example in [httpdecoder-test/launcher.cpp](httpdecoder-test/launcher.cpp)
 
 ## Example
 
