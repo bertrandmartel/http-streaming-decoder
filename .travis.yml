@@ -12,6 +12,7 @@ script:
     - make
     - ./httpdecoder-test/release/httpdecoder-test
     - make clean
+    - find . -name "Makefile" -type f -delete
     - qmake -qt=qt4 -v
     - qmake -qt=qt4
     - make
