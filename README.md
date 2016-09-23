@@ -13,7 +13,7 @@ C++ HTTP streaming decoder library for Qt4/Qt5
 
 ## Usage
 
-Instanciate `httpdecoder` & `httpconsumer` objects :
+Instantiate `httpdecoder` & `httpconsumer` objects :
 
 ```
 #include "protocol/http/httpdecoder.h"
