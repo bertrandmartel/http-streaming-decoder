@@ -11,6 +11,7 @@ script:
     - qmake -qt=qt5
     - make
     - ./httpdecoder-test/release/httpdecoder-test
+    - make clean
     - qmake -qt=qt4 -v
     - qmake -qt=qt4
     - make
