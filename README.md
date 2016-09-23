@@ -91,8 +91,9 @@ with in `your-app.pro` :
 ```
 TARGET = your-app
 SOURCES = main.cpp
-INCLUDEPATH += ../http-streaming-decoder/httpdecoder/release
-LIBS += -L../http-streaming-decoder/httpdecoder/release -lhttpdecoder
+INCLUDEPATH += $$PWD/../http-streaming-decoder/httpdecoder/release
+LIBS += -L$$PWD/../http-streaming-decoder/httpdecoder/release -lhttpdecoder
+DEPENDPATH += $$PWD/../http-streaming-decoder/httpdecoder/release
 ```
 
 ## Build library
