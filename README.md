@@ -1,9 +1,9 @@
 # HTTP streaming decoder library#
 
-[![Build Status](https://travis-ci.org/akinaru/http-streaming-decoder.svg?branch=master)](https://travis-ci.org/akinaru/http-streaming-decoder)
+[![Build Status](https://travis-ci.org/bertrandmartel/http-streaming-decoder.svg?branch=master)](https://travis-ci.org/bertrandmartel/http-streaming-decoder)
 [![License](http://img.shields.io/:license-mit-blue.svg)](LICENSE.md)
 
-http://akinaru.github.io/http-streaming-decoder
+http://bertrandmartel.github.io/http-streaming-decoder
 
 C++ HTTP streaming decoder library for Qt4/Qt5
 
@@ -75,7 +75,7 @@ decoder.httpdecode(consumer, httpframe);
 * from git submodule
 
 ```
-git submodule add git://github.com/akinaru/http-streaming-decoder.git
+git submodule add git://github.com/bertrandmartel/http-streaming-decoder.git
 ```
 
 and in your `project.pro` :
@@ -105,7 +105,7 @@ make
 
 ## Projects using this library
 
-* https://github.com/akinaru/websocket-non-blocking
+* https://github.com/bertrandmartel/websocket-non-blocking
 
 ## Compatibility
 
